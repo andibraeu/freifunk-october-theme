@@ -1,0 +1,65 @@
+[viewBag]
+==
+{% put styles %}
+    <link type="text/css" rel="stylesheet" media="screen" href="{{'assets/vendor/converse.js/dist/converse.min.css'|theme}}" />
+    <style type="text/css">
+        #conversejs .converse-chatboxes {
+            bottom: 5em !important;
+        }
+    </style>
+{% endput %}
+{% put scripts %}
+<script src="{{'assets/vendor/converse.js/dist/converse.min.js'|theme}}"></script>
+<script>
+    var localpart = '';
+    function uuidv4() {
+    	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    		    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    				    return v.toString(16);
+    	});
+		}
+    function getOrCreateLocalPart() {
+			var localpart = window.localStorage.getItem('jid_local_part');
+			if (localpart) {
+				return localpart;
+			} else {
+				localpart = uuidv4();
+				window.localStorage.setItem('jid_local_part', localpart);
+				return localpart
+			}
+    }
+
+    if (typeof(Storage) !== "undefined") {
+      localpart = getOrCreateLocalPart();
+	    // Code for localStorage
+    } else {
+	    localpart = uuidv4();
+    }
+    converse.initialize({
+        // Please use this connection manager only for testing purposes
+			  authentication: 'anonymous',
+        allow_logout: false, // No point in logging out when we have auto_login as true.
+        allow_muc_invitations: false, // Doesn't make sense to allow because only
+                                      // roster contacts can be invited
+        allow_contact_requests: false, // Contacts from other servers cannot,
+                                      // be added and anonymous users don't
+                                      // know one another's JIDs, so disabling.
+        auto_login: false,
+        auto_join_rooms: [
+            'freifunk@conference.jabber.weimarnetz.de',
+        ],
+        notify_all_room_messages: [
+            'freifunk@conference.jabber.weimarnetz.de',
+        ],
+				jid: localpart + '@anon.jabber.weimarnetz.de',
+        keepalive: true, 
+        hide_muc_server: true, // Federation is disabled, so no use in
+                               // showing the MUC server.
+        play_sounds: true,
+		view_mode: 'overlayed',
+        show_controlbox_by_default: false,
+        strict_plugin_dependencies: false,
+        websocket_url: 'wss://anon.jabber.weimarnetz.de:5443/websocket/'
+    });
+</script>
+{% endput %}
