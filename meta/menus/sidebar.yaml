@@ -120,13 +120,9 @@ items:
             isExternal: '0'
     -
         title: Termine
-        nesting: ''
         type: cms-page
-        url: ''
         code: ''
-        reference: ProEvents/termine
-        cmsPage: ''
-        replace: ''
+        reference: PluginProevents/kalender
         viewBag:
             isHidden: '0'
             cssClass: termine
@@ -239,9 +235,13 @@ items:
                     isExternal: '0'
             -
                 title: Impressum
+                nesting: ''
                 type: cms-page
+                url: ''
                 code: ''
                 reference: legal/Impressum
+                cmsPage: ''
+                replace: ''
                 viewBag:
                     isHidden: '0'
                     cssClass: impressum
