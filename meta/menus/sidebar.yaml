@@ -54,44 +54,95 @@ items:
                     cssClass: was-ist-freifunk
                     isExternal: '0'
             -
-                title: 'Freifunk für Zuhause'
+                title: Mitmachen
                 nesting: '0'
                 type: static-page
                 url: ''
                 code: ''
-                reference: ueber-freifunk-freifunk-fuer-zuhause
+                reference: mitmachen
                 cmsPage: ''
                 replace: '0'
                 viewBag:
                     isHidden: '0'
-                    cssClass: freifunk-fuer-zuhause
+                    cssClass: ''
                     isExternal: '0'
             -
-                title: 'Freifunk für Gastro'
+                title: Mithelfen
                 nesting: '0'
                 type: static-page
                 url: ''
                 code: ''
-                reference: ueber-freifunk-freifunk-fuer-gastro
+                reference: ueber-freifunk-mithelfen
                 cmsPage: ''
                 replace: '0'
                 viewBag:
                     isHidden: '0'
-                    cssClass: freifunk-fuer-gastro
+                    cssClass: ''
                     isExternal: '0'
             -
-                title: 'Für Freifunknutzer'
+                title: Spenden
                 nesting: '0'
                 type: static-page
-                url: ''
                 code: ''
-                reference: ueber-freifunk-fuer-freifunknutzer
-                cmsPage: ''
+                reference: ueber-weimarnetz-spenden
                 replace: '0'
                 viewBag:
                     isHidden: '0'
-                    cssClass: fuer-freifunknutzer
+                    cssClass: ''
                     isExternal: '0'
+    -
+        title: Entwicklung
+        nesting: ''
+        type: url
+        url: '#'
+        code: ''
+        reference: ''
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+        items:
+            -
+                title: Firmwareentwicklung
+                nesting: ''
+                type: url
+                url: 'https://github.com/weimarnetz/weimarnetz'
+                code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '1'
+            -
+                title: Meshkit
+                nesting: ''
+                type: url
+                url: 'https://github.com/weimarnetz/meshkit'
+                code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '1'
+            -
+                title: Buildbot
+                nesting: ''
+                type: url
+                url: 'https://buildbot.weimarnetz.de'
+                code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '1'
     -
         title: Router
         nesting: ''
@@ -120,9 +171,13 @@ items:
             isExternal: '0'
     -
         title: Termine
+        nesting: ''
         type: cms-page
+        url: ''
         code: ''
         reference: PluginProevents/kalender
+        cmsPage: ''
+        replace: ''
         viewBag:
             isHidden: '0'
             cssClass: termine
@@ -192,19 +247,6 @@ items:
                 viewBag:
                     isHidden: '0'
                     cssClass: telegram
-                    isExternal: '1'
-            -
-                title: 'Riot Chat'
-                nesting: ''
-                type: url
-                url: 'https://riot.im/app/#/room/#ffcux:irc.hackint.org'
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: riot
                     isExternal: '1'
     -
         title: Weiteres

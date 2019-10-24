@@ -1,0 +1,51 @@
+[viewBag]
+snippetCode = "betterplace-summary"
+snippetName = "Betterplace Summary"
+==
+<?php
+function onStart()
+{
+    $betterplaceProject = file_get_contents('https://api.betterplace.org/de/api_v4/projects/14895.json');
+    $bpPrjJson = json_decode($betterplaceProject, true);
+    $this['bpPrjJson'] = $bpPrjJson;
+    $betterplaceNeeds = file_get_contents('https://api.betterplace.org/de/api_v4/projects/14895/needs.json');
+    $bpNeedsJson = json_decode($betterplaceNeeds, true);
+    
+    $this['bpProgressPercentage'] = $bpPrjJson['progress_percentage'];
+    $this['bpOpenAmount'] = $bpPrjJson['open_amount_in_cents'];
+    $this['bpIncompleteNeedCount'] = $bpPrjJson['incomplete_need_count'];
+    $this['bpCompletedNeedCount'] = $bpPrjJson['completed_need_count'];
+    foreach($bpPrjJson['links'] as $links) {
+        if ($links['rel'] == 'platform') {
+            $this['bpPlatformLink'] = $links['href'];
+        } elseif ($links['rel'] == 'new_donation' ) {
+            $this['bpDonationLink'] = $links['href'];
+        }
+    }
+    
+    $this['bpNeeds'] = $bpNeedsJson['data'];
+}
+?>
+==
+<h2>Betterplace.org</h2>
+
+		<p>Mit dieser Spendenplattform können wir konkrete Projekte angeben, die auch den Spendern transparent den Fortschritt und die Verwendung der Spenden anzeigt.</p>
+
+		<p>Zahlen und Fakten:</p>
+
+		<ul>
+			<li>Laufende Kampagnen: {{ bpIncompleteNeedCount }}</li>
+			<li>Abgeschlossene Kampagnen: {{ bpCompletedNeedCount }}</li>
+			<li>Eindeutige Spender: {{ bpPrjJson.donor_count }}</li>
+			<li>Positive Meinungen: {{ bpPrjJson.positive_opinions_count }}</li>
+			<li>Negative Meinungen: {{ bpPrjJson.negative_opinions_count }}</li>
+			<li><a href="{{ bpPlatformLink }}" target="_blank">Mehr Informationen</a></li>
+			<li><a href="{{ bpDonationLink }}" target="_blank">Direkt spenden</a></li>
+		</ul>Gesamtspendenstand:
+		<a href="{{ bpPlatformLink }}" target="_blank">
+			<div class="progress">
+				<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="{{ bpProgressPercentage }}" class="progress-bar" style="width: {{ bpProgressPercentage }}%;">
+				{{ bpProgressPercentage }} %
+				</div></div>
+		</a>
+		<br/>
