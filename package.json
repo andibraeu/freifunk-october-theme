@@ -6,7 +6,7 @@
   "homepage": "http://www.jumplink.eu",
   "scripts": {
     "theme_settings": "node ./utilities/bootstrap_theme_settings.js && node ./utilities/merge_theme_settings.js",
-		"postinstall": "cp -r node_modules/converse.js /tmp/ && cd /tmp/converse.js && make dist && cd - && rm -rf assets/vendor/converse.js && mkdir -p assets/vendor/converse.js && mv /tmp/converse.js/dist assets/vendor/converse.js && rm -rf /tmp/concourse.js"
+    "postinstall": "cp -r node_modules/converse.js /tmp/ && cd /tmp/converse.js && make dist && cd - && rm -rf assets/vendor/converse.js && mkdir -p assets/vendor/converse.js && mv /tmp/converse.js/dist assets/vendor/converse.js && rm -rf /tmp/concourse.js"
   },
   "author": "Pascal Garber <pascal.jumplink.eu>",
   "license": "MIT",
@@ -14,6 +14,6 @@
   "devDependencies": {
     "js-yaml": "^3.6.1",
     "write-yaml": "^0.2.2",
-		"converse.js": "andibraeu/converse.js#v5.0.3-freifunk"
+    "converse.js": "andibraeu/converse.js#v5.0.3-freifunk"
   }
 }
