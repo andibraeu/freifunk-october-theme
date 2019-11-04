@@ -1,0 +1,37 @@
+title = "Artikel"
+url = "/blog/artikel/:slug"
+layout = "jumplink-barba-default-page"
+is_hidden = 0
+
+[blogPost]
+slug = "{{ :slug }}"
+categoryPage = "PluginCatalog/brand-details"
+
+[ssbuttons sharingbuttons]
+fa = "no"
+twitter = 1
+facebook = 1
+google+ = 0
+stumbleupon = 0
+linkedin = 1
+order_twitter = 1
+order_facebook = 2
+order_google+ = 3
+order_stumbleupon = 4
+order_linkedin = 5
+==
+<?php
+function onEnd()
+{
+    // Optional - set the page title to the post title
+    if (isset($this->post))
+        $this->page->title = $this->post->title;
+}
+?>
+==
+{% if post %}
+    {% component 'blogPost' %}
+    {% component 'sharingbuttons' %}
+{% else %}
+    <h2>Post not found</h2>
+{% endif %}

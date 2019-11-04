@@ -1,0 +1,24 @@
+title = "Kategorie"
+url = "/blog/kategorie/:slug"
+layout = "jumplink-barba-default-page"
+is_hidden = 0
+
+[blogCategories]
+slug = "{{ :slug }}"
+displayEmpty = 0
+categoryPage = "blog/category"
+==
+<?php
+function onEnd()
+{
+    // Optional - set the page title to the category name
+    if ($this->category)
+        $this->page->title = $this->category->name;
+}
+?>
+==
+{% if not category %}
+    <h2>Category not found</h2>
+{% else %}
+    {% component 'blogPosts' %}
+{% endif %}

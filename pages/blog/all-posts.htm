@@ -1,0 +1,30 @@
+title = "Blog"
+url = "/blog"
+layout = "jumplink-barba-default-page"
+is_hidden = 0
+
+[blogPosts]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "Keine Beiträge vorhanden!"
+sortOrder = "published_at desc"
+categoryPage = "blog/kategorie"
+postPage = "blog/post"
+
+[shares]
+facebook = 1
+twitter = 1
+googleplus = 0
+tumblr = 0
+linkedin = 1
+reddit = 1
+==
+<div class="container hyphenate">
+    <div class="row pt-5">
+        <div class="col-xs-12 col-md-8 offset-md-2 pt-5">
+            {% component 'blogPosts' %}
+            
+       </div>
+       {% component 'shares' %}
+    </div>
+</div>

@@ -1,0 +1,12 @@
+title = "Weimarnetz Blog"
+url = "/blog/feed"
+meta_description = "Blogposts, Ankündigungen und weitere Beiträge werden hier regelmäßig veröffentlicht."
+is_hidden = 0
+
+[blogRssFeed]
+sortOrder = "created_at desc"
+postsPerPage = 10
+blogPage = "blog/all-posts"
+postPage = "blog/post"
+==
+{% component 'blogRssFeed' %}
