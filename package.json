@@ -12,8 +12,9 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "converse.js": "andibraeu/converse.js#v5.0.3-freifunk",
+    "get-google-fonts": "^1.2.0",
     "js-yaml": "^3.6.1",
-    "write-yaml": "^0.2.2",
-    "converse.js": "andibraeu/converse.js#v5.0.3-freifunk"
+    "write-yaml": "^0.2.2"
   }
 }
