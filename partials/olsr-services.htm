@@ -1,0 +1,54 @@
+[viewBag]
+snippetCode = "olsr-services"
+snippetName = "OLSR Services"
+==
+<?php
+function onStart() {
+    $contents = file_get_contents("/var/run/services_olsr");
+    $contentLines = explode("\n", $contents);
+    $serices = array();
+    
+    foreach ($contentLines as &$line)  
+    {
+    	if (($line == "" || strpos($line, "#") == 0))
+    	{
+    		continue;
+    	}
+    	
+    	$serviceLine = explode("#", $line);
+    	$source = trim($serviceLine[1]);
+    	if (strpos($source, "my") !== false)
+    	{
+    		$source = "weimarnetz.de";
+    	}
+    	$service = explode("|", $serviceLine[0]);
+    	$services[] = array(
+    	    'source' => $source,
+    	    'url' => $service[0],
+    	    'name' => $service[2],
+    	    'protocol' => $service[1]
+    	    );
+    }
+    $this['services'] = $services;
+}
+?>
+==
+<table class="table table-striped">                                                                                                                   
+	<thead>                                                                                                                                       
+		<tr>                                                                                                                                  
+			<th>URL</th>
+			<th>Protokoll</th>
+			<th>Quelle</th>
+		</tr>                                                                                                                                 
+	</thead>                                                                                                                                      
+<tbody id="services_table">
+    {% for service in services %}
+        <tr>
+            <td><a href="{{ service.url }}" target="_window">{{ service.name }}</a></td>
+            <td>{{ service.protocol }}</td>
+            <td><a href="http://{{ service.source }}/cgi-bin-status.html" target="_window">{{ service.source }}</a></td>
+        </tr>
+    {% endfor %}
+
+</tbody>
+</table>

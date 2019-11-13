@@ -1,0 +1,74 @@
+[viewBag]
+snippetCode = "olsr-connections"
+snippetName = "OLSR Connections"
+==
+<?php
+function onStart() {
+    $ch = curl_init();
+    $timeout = 5; // 0 wenn kein Timeout
+    curl_setopt($ch, CURLOPT_URL, "http://localhost:9090/links");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $file_content = curl_exec($ch);
+    curl_close($ch);
+    $neighbors = json_decode($file_content,true);
+    $links = array();
+    
+    if (array_key_exists('links', $neighbors)) {
+        foreach ($neighbors['links'] as $link) {
+        	$etx=$link['linkCost']/1024;
+        	if ($etx<2){
+        		$backgroundcolor="#00cc00";
+        	} elseif ($etx<4) {
+        		$backgroundcolor="#ffcb05";
+        	} elseif ($etx<10) {
+        		$backgroundcolor="#ff6600";
+        	} else {
+        		$backgroundcolor="#bb3333";
+        	}
+        	if ($etx>100){
+        		$etx_output="INFINITE";
+        	} else {
+        		$etx_output=number_format($etx,3);
+        	}
+        	$links[] = array(
+        	    'remoteIp' => $link['remoteIP'],
+    	        'localIp' => $link['localIP'],
+    	        'nlq' => number_format($link['neighborLinkQuality'], 3),
+    	        'lq' => number_format($link['linkQuality'], 3),
+    	        'etx' => $etx_output,
+    	        'backgroundcolor' => $backgroundcolor,
+    	        'remoteHostName' => gethostbyaddr($link['remoteIP'])
+    	        );
+        }
+    }
+    $this['links'] = $links;
+}
+?>
+==
+<table class="table table-striped">                                                              
+    <thead>                                                                            
+        <tr>                                      
+            <th>Neighbour IP</th>                                                   
+            <th>Hostname</th>                                   
+            <th>Local interface IP</th>                   
+            <th>Device</th>         
+            <th>LQ</th>                                              
+            <th>NLQ</th>                                                  
+            <th>ETX</th>                                                 
+        </tr>                                                                        
+    </thead>                                
+    <tbody id="olsr_neigh_table">
+        {% for link in links %}
+            <tr>
+                <td><a href='http://{{ link.remoteIp }}/cgi-bin-status.html'>{{ link.remoteIp }}</a></td>
+                <td><a href='http://{{ link.remoteHostName }}/cgi-bin-status.html'>{{ link.remoteHostName }}</a></td>
+                <td>{{ link.localIp }}</td>
+                <td/>
+                <td>{{ link.lq }}</td>
+                <td>{{ link.nlq }}</td>
+                <td style='background-color: {{ link.backgroundcolor }}'>{{ link.etx }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
