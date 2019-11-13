@@ -1,10 +1,14 @@
 static-pages:
     news: {  }
-    map-2: {  }
     willkommen: {  }
+    map-2: {  }
+    status:
+        status-services: {  }
+        status-olsr-verbindungen: {  }
     ueber-freifunk:
         mitmachen: {  }
         ueber-freifunk-was-ist-freifunk: {  }
         ueber-freifunk-mithelfen: {  }
-        ueber-freifunk-spenden: {  }
         ueber-weimarnetz-spenden: {  }
+    nutzungsbedingungen: {  }
+    pico-peering-agreement: {  }

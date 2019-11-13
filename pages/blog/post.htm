@@ -5,20 +5,32 @@ is_hidden = 0
 
 [blogPost]
 slug = "{{ :slug }}"
-categoryPage = "PluginCatalog/brand-details"
+categoryPage = "blog/kategorie"
 
-[ssbuttons sharingbuttons]
-fa = "no"
-twitter = 1
+[ssbuttonsssb socialbuttons]
 facebook = 1
+twitter = 1
 google+ = 0
-stumbleupon = 0
+tumblr = 0
+pinterest = 0
+pocket = 0
+reddit = 1
 linkedin = 1
-order_twitter = 1
-order_facebook = 2
+wordpress = 0
+pinboard = 0
+email = 1
+order_facebook = 1
+order_twitter = 2
 order_google+ = 3
-order_stumbleupon = 4
-order_linkedin = 5
+order_tumblr = 4
+order_pinterest = 5
+order_pocket = 6
+order_reddit = 7
+order_linkedin = 8
+order_wordpress = 9
+order_pinboard = 10
+order_email = 11
+theme = "simple_icons_black"
 ==
 <?php
 function onEnd()
@@ -31,7 +43,7 @@ function onEnd()
 ==
 {% if post %}
     {% component 'blogPost' %}
-    {% component 'sharingbuttons' %}
+    {% component 'socialbuttons' %}
 {% else %}
     <h2>Post not found</h2>
 {% endif %}

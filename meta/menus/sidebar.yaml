@@ -27,6 +27,72 @@ items:
             cssClass: news
             isExternal: '0'
     -
+        title: Blog
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: blog/all-posts
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: Status
+        nesting: ''
+        type: url
+        url: '#'
+        code: ''
+        reference: ''
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: status
+            isExternal: '0'
+        items:
+            -
+                title: Karte
+                nesting: ''
+                type: url
+                url: /map
+                code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: map
+                    isExternal: '0'
+            -
+                title: 'Dienste im Weimarnetz'
+                nesting: '0'
+                type: static-page
+                url: ''
+                code: ''
+                reference: status-services
+                cmsPage: ''
+                replace: '0'
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: 'OLSR Verbindungen'
+                nesting: '0'
+                type: static-page
+                url: ''
+                code: ''
+                reference: status-olsr-verbindungen
+                cmsPage: ''
+                replace: '0'
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+    -
         title: 'Über Freifunk'
         nesting: ''
         type: url
@@ -103,7 +169,7 @@ items:
         replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: ''
+            cssClass: entwicklung
             isExternal: '0'
         items:
             -
@@ -159,25 +225,12 @@ items:
             cssClass: router
             isExternal: '0'
     -
-        title: Karte
-        nesting: ''
-        type: url
-        url: /map
-        code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
-        viewBag:
-            isHidden: '0'
-            cssClass: map
-            isExternal: '0'
-    -
         title: Termine
         nesting: ''
         type: cms-page
         url: ''
         code: ''
-        reference: PluginProevents/kalender
+        reference: PluginProevents/termine
         cmsPage: ''
         replace: ''
         viewBag:
@@ -200,27 +253,39 @@ items:
         items:
             -
                 title: 'Unser Wiki'
+                nesting: ''
                 type: url
                 url: 'https://wireless.subsignal.org'
                 code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
                 viewBag:
                     isHidden: '0'
                     cssClass: freifunk-wiki
                     isExternal: '1'
             -
                 title: Facebook
+                nesting: ''
                 type: url
                 url: 'https://www.facebook.com/weimarnetz/'
                 code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
                 viewBag:
                     isHidden: '0'
                     cssClass: facebook
                     isExternal: '1'
             -
                 title: Twitter
+                nesting: ''
                 type: url
                 url: 'https://twitter.com/weimarnetz'
                 code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
                 viewBag:
                     isHidden: '0'
                     cssClass: telegram

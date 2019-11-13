@@ -11,20 +11,37 @@ sortOrder = "published_at desc"
 categoryPage = "blog/kategorie"
 postPage = "blog/post"
 
-[shares]
+[ssbuttonsssb socialbuttons]
 facebook = 1
 twitter = 1
-googleplus = 0
+google+ = 0
 tumblr = 0
-linkedin = 1
+pinterest = 0
+pocket = 0
 reddit = 1
+linkedin = 1
+wordpress = 0
+pinboard = 0
+email = 1
+order_facebook = 1
+order_twitter = 2
+order_google+ = 3
+order_tumblr = 4
+order_pinterest = 5
+order_pocket = 6
+order_reddit = 7
+order_linkedin = 8
+order_wordpress = 9
+order_pinboard = 10
+order_email = 11
+theme = "simple_icons_black"
 ==
 <div class="container hyphenate">
     <div class="row pt-5">
         <div class="col-xs-12 col-md-8 offset-md-2 pt-5">
             {% component 'blogPosts' %}
-            
+            {% component 'socialbuttons' %}
        </div>
-       {% component 'shares' %}
+       
     </div>
 </div>

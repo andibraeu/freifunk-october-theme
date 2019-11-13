@@ -10,4 +10,9 @@ calendar = "all_calendars"
 eurocal = 1
 ical = 1
 ==
+{% put styles %}
+<link rel="stylesheet" href="/plugins/radiantweb/proevents/assets/css/proevents_calendar.css">
+<link rel="stylesheet" href="/plugins/radiantweb/proevents/assets/css/proevents_tooltips.css">
+<link rel="stylesheet" href="/plugins/radiantweb/proevents/assets/css/proevents_modal.css">
+{% endput %}
 {% partial 'PluginProevents/calendar' __SELF__=proEventCalendar %}

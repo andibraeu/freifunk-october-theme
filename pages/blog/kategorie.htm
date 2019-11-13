@@ -5,8 +5,8 @@ is_hidden = 0
 
 [blogCategories]
 slug = "{{ :slug }}"
-displayEmpty = 0
-categoryPage = "blog/category"
+displayEmpty = 1
+categoryPage = "blog/kategorie"
 ==
 <?php
 function onEnd()
@@ -20,5 +20,5 @@ function onEnd()
 {% if not category %}
     <h2>Category not found</h2>
 {% else %}
-    {% component 'blogPosts' %}
+    {% component 'blogCategories' %}
 {% endif %}
