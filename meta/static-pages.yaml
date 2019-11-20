@@ -4,7 +4,6 @@ static-pages:
     map-2: {  }
     status:
         status-services: {  }
-        status-olsr-verbindungen: {  }
     ueber-freifunk:
         mitmachen: {  }
         ueber-freifunk-was-ist-freifunk: {  }

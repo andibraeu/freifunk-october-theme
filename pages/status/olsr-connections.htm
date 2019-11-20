@@ -1,0 +1,26 @@
+title = "OLSR Verbindungen"
+url = "/status/olsr-connections"
+layout = "jumplink-barba-default-page"
+is_hidden = 0
+==
+<?php
+function onRefreshTime() {
+
+}
+?>
+==
+{% content 'status/olsr-intro' %}
+
+<div id="olsrConnections">{% partial 'olsr-connections' %}</div>
+
+{% content 'status/olsr-legend' %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) { 
+    setInterval(function() {
+        $.request('onRefreshTime', {
+            update: { 'olsr-connections': '#olsrConnections' }
+        })
+    }, 30000);
+});
+</script>

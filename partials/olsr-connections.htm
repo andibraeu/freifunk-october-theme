@@ -1,19 +1,27 @@
 [viewBag]
-snippetCode = "olsr-connections"
+snippetCode = "olsrConnections"
 snippetName = "OLSR Connections"
 ==
 <?php
 function onStart() {
-    $ch = curl_init();
-    $timeout = 5; // 0 wenn kein Timeout
-    curl_setopt($ch, CURLOPT_URL, "http://localhost:9090/links");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $file_content = curl_exec($ch);
-    curl_close($ch);
-    $neighbors = json_decode($file_content,true);
+    $neighbors = $this->get_neighbors("localhost");
+    $links = $this->normalize_link_data($neighbors);
+    foreach($links as $link) {
+        $neighbors = $this->get_neighbors($link['remoteIp']);
+        $neighbor_links = $this->normalize_link_data($neighbors);
+        foreach($neighbor_links as $neighbor_link) {
+            $links[] = $neighbor_link;
+        }
+    }
+    $this['links'] = $links;
+}
+
+function onRefreshTime() {
+
+}
+
+function normalize_link_data($neighbors) {
     $links = array();
-    
     if (array_key_exists('links', $neighbors)) {
         foreach ($neighbors['links'] as $link) {
         	$etx=$link['linkCost']/1024;
@@ -42,7 +50,18 @@ function onStart() {
     	        );
         }
     }
-    $this['links'] = $links;
+    return $links;
+}
+
+function get_neighbors($host) {
+    $ch = curl_init();
+    $timeout = 5; // 0 wenn kein Timeout
+    curl_setopt($ch, CURLOPT_URL, "http://".$host.":9090/links");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $file_content = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($file_content,true);   
 }
 ?>
 ==
