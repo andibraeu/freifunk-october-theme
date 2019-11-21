@@ -62,6 +62,21 @@ form:
                 tab: 'General'
 
 
+            monitoring_url:
+                label: Icinga API URL for Monitoring data
+                type: text
+                default: 
+                tab: 'Icinga Monitoring'
+            monitoring_user:
+                label: Icinga API User for Monitoring data
+                type: text
+                default: 
+                tab: 'Icinga Monitoring'
+            monitoring_password:
+                label: Icinga API password for Monitoring data
+                type: password
+                default: 
+                tab: 'Icinga Monitoring'
             router_base_fw_url:
                 label: Base firmware url
                 type: text

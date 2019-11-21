@@ -1,0 +1,89 @@
+[viewBag]
+==
+<?php
+function onStart() {
+    $this['icingaResults'] = $this->get_icinga_stats();
+}
+
+function get_icinga_stats() {
+    $request_url = $this->theme->monitoring_url;
+    $username = $this->theme->monitoring_user;
+    $password = $this->theme->monitoring_password;
+    $headers = array(
+            'Accept: application/json',
+            'X-HTTP-Method-Override: GET'
+    );
+    $data = array(
+            'attrs' => array('name', 'state'),
+            'joins' => array('host.name', 'host.state'),
+    );
+    
+    $ch = curl_init();
+    curl_setopt_array($ch, array(
+            CURLOPT_URL => $request_url,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_USERPWD => $username . ":" . $password,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => count($data),
+            CURLOPT_POSTFIELDS => json_encode($data)
+    ));
+    
+    $response = curl_exec($ch);
+    if ($response === false) {
+            Log::info("Error: " . curl_error($ch) . "(" . $response . ")");
+    }
+    
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+	$states_by_host = array();
+
+    print($code);
+    if ($code == 200) {
+		$response = json_decode($response, true);
+		foreach($response['results'] as $service) {
+			$hostname = $service['joins']['host']['name'];
+			$host_state = $service['joins']['host']['state'];
+			$service_state = $service['attrs']['state'];
+			if (array_key_exists($hostname, $states_by_host)) {
+				$states_by_host[$hostname][$service_state] += 1;
+			} else {
+				$states_by_host[$hostname] = array('host' => 0, '0' => 0, '1' => 0, '2' => 0, '3' => 0 );
+				$states_by_host[$hostname]['host'] = $host_state;
+				$states_by_host[$hostname][$service_state] += 1;
+			}
+		}
+    }
+    return $states_by_host;
+}
+?>
+==
+<table class="table table-striped sortable">
+    <thead> 
+        <tr>
+            <th title="Hostname des Servers">Name</th>
+            <th title="Status des Servers (Up=läuft, Down=aus)">Status</th>
+            <th title="Anzahl Services in Ordnung">Ok</th>
+            <th title="Anzahl Services mit Warnung">Warnung</th>
+            <th title="Anzahl kritischer Services">Kritisch</th>
+            <th title="Anzahl Services, auf deren Rückmeldung gewartet wird">Wartend</th>
+        </tr>
+    </thead>
+    <tbody id="services_table">
+        {% for host, result in icingaResults %}
+        {% if result.host == 1 %}{% set hostclass = "table-danger" %}{% else %}{% set hostclass = "table-success" %}{% endif %}
+        {% if result.0 == 0 %}{% set okclass = "table-success" %}{% else %}{% set okclass = "" %}{% endif %}
+        {% if result.1 > 0 %}{% set warningclass = "table-warning" %}{% else %}{% set warningclass = "" %}{% endif %}
+        {% if result.2 > 0 %}{% set criticalclass = "table-danger" %}{% else %}{% set criticalclass = "" %}{% endif %}
+        {% if result.3 > 0 %}{% set unknownclass = "table-info" %}{% else %}{% set unknownclass = "" %}{% endif %}
+        <tr>
+            <td>{{ host }}</td>
+            <td class={{ hostclass }}>{% if result.host == 0 %} UP {% elseif result.host == 1 %} DOWN {% else %} UNKNOWN {% endif %}</td>
+            <td class={{ okclass }}>{{ result.0 }}</td>
+            <td class={{ warningclass }}>{{ result.1 }}</td>
+            <td class={{ criticalclass }}>{{ result.2 }}</td>
+            <td class={{ unknownclass }}>{{ result.3 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

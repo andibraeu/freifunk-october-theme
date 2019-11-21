@@ -1,0 +1,30 @@
+title = "Monitoring"
+url = "/status/monitoring"
+layout = "jumplink-barba-default-page"
+is_hidden = 0
+==
+<h2>Allgemeine Daten</h2>
+<div class="row warning"></div>
+
+<h3>Server</h3>
+{% partial 'icinga-monitoring' %}
+
+<h2>Daten der Router</h2>
+<div class="row">
+<div class="routergesamt">Router gesamt: </div>
+Router erreichbar: 74 
+<table class="router table table-striped sortable">
+    <thead>
+        <tr>
+            <th title="Vor so vielen Stunden wurde die Information zuletzt aktualisiert" class="sorttable_numeric sorttable_sorted">Alter in h<span id="sorttable_sortfwdind">&nbsp;▾</span></th>
+            <th title="Name des Routers">Name</th>
+	    <th title="Knotennummer des Routers" class="sorttable_numeric">Knoten</th>
+	    <th title="Firmwareversion, die aktuell installiert ist">Firmware</th>
+	    <th title="So lang ist der letzte Neustart her" class="sorttable_numeric">Uptime in h</th>
+	    <th title="Anzahl der Nachbarknoten, die dieser Knoten sieht" class="sorttable_numeric">Nachbarn</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+</div>
