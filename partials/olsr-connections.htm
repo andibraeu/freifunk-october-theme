@@ -24,7 +24,7 @@ function normalize_link_data($neighbors) {
     $links = array();
     if (array_key_exists('links', $neighbors)) {
         foreach ($neighbors['links'] as $link) {
-        	$etx=$link['linkCost']/1024;
+        	$etx=$link['linkCost'];
         	if ($etx<2){
         		$backgroundcolor="#00cc00";
         	} elseif ($etx<4) {
