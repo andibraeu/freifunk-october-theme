@@ -1,0 +1,341 @@
+[viewBag]
+==
+<?php
+function onStart() {
+    $cacheTtl = 10; // 10 minutes cache ttl
+    $this['routerResults'] = Cache::remember('routerResults', $cacheTtl, function() {
+        return $this->get_router_stats();
+    });
+    $this['activeRouters'] = Cache::remember('activeRouters', $cacheTtl, function() {
+        return $this->get_active_routers();
+    });
+}
+
+function get_active_routers() {
+    $apifile = "https://weimarnetz.de/weimarnetz.json";
+    $monfile = "https://weimarnetz.de/monitoring.json";
+    $api = file_get_contents($apifile);
+    $json = json_decode($api, true);
+    return $json['state']['nodes'];
+}
+
+function get_router_stats() {
+    $routerStats = $this->get_data("https://mapapi.weimarnetz.de/db/_all_docs?include_docs=true");
+    $routers = $routerStats['rows'];
+    $valid_routers = $this->filter_invalid_routers($routers);
+    $valid_sorted_routers = $this->sort_array_by_date_desc($valid_routers);
+    array_walk($valid_sorted_routers, function(&$item, $key, $nowtime) {
+        $mtime = new DateTime($item['doc']['mtime']);
+        $item['doc']['mtimehours'] = round(($nowtime - $mtime->getTimestamp())/3600);
+        if (array_key_exists('olsr', $item['doc']) && array_key_exists('links', $item['doc']['olsr'])) {
+            array_walk($item['doc']['olsr']['links'], function(&$link, $key) {
+                $link['etx'] = round($link['linkCost'] / 1024.0 * 1000.0, 3);
+                if ($link['etx'] > 4000) {
+                    $link['etx'] = 'INFINIT';
+                }
+                
+            });
+        }
+        if (!array_key_exists('weimarnetz', $item['doc'])) {
+            $item['doc']['weimarnetz']['nodenumber'] = 0;
+        }
+        
+        if (!array_key_exists('weimarnetz', $item['doc']) || !array_key_exists('nodenumber', $item['doc']['weimarnetz'])) {
+            if (array_key_exists('olsr', $item['doc']) && array_key_exists('ipv4Config', $item['doc']['olsr']) && array_key_exists('mainIpAddress',  $item['doc']['olsr']['ipv4Config'])) {
+                $item['doc']['weimarnetz']['nodenumber'] = $this->get_node_number($item['doc']['olsr']['ipv4Config']['mainIpAddress']);
+            } else if (array_key_exists('olsr', $item['doc']) && array_key_exists('ipv4Config', $item['doc']['olsr']) && array_key_exists('mainIp',  $item['doc']['olsr']['ipv4Config'])) {
+                $item['doc']['weimarnetz']['nodenumber'] = $this->get_node_number($item['doc']['olsr']['ipv4Config']['mainIp']);
+            }
+        }
+        if (is_array($item['doc']['system']['uptime'])) {
+            $item['doc']['system']['uptime'] = floor($item['doc']['system']['uptime'][0]/3600);
+        }
+    }, strtotime("now"));
+    return $valid_sorted_routers;
+}
+
+function get_node_number($ipAddress) {
+    $ip = explode('.', $ipAddress);
+    return floor($ip[2]) + ( floor($ip[3] / 64)  ) * 255;
+}
+
+function filter_invalid_routers($routers) {
+    return array_filter($routers, function($value, $key) {
+        return array_key_exists('doc', $value) && array_key_exists('mtime', $value['doc']);
+    }, ARRAY_FILTER_USE_BOTH);
+}
+
+function sort_array_by_date_desc($array) {
+    usort($array, function($a, $b) {
+      $ad = new DateTime($a['doc']['mtime']);
+      $bd = new DateTime($b['doc']['mtime']);
+    
+      if ($ad == $bd) {
+        return 0;
+      }
+    
+      return $ad > $bd ? -1 : 1;
+    });
+    return $array;
+}
+
+function get_data($url) {
+    $ch = curl_init();
+    $timeout = 5; // 0 wenn kein Timeout
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $file_content = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($file_content,true);   
+}
+?>
+==
+<div class="routergesamt"><p>Router gesamt: {{ routerResults|length }}</br>
+Router erreichbar: {{ activeRouters }}</p>
+</div>
+
+<table id="routertable" data-toggle="table" class="table table-striped" data-search="true" data-sort-name="age" data-sort-order="asc">
+    <thead>
+        <tr>
+            <th data-field="age" data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="Vor so vielen Stunden wurde die Information zuletzt aktualisiert">Alter in h</th>
+            <th data-sortable="true" title="Name des Routers">Name</th>
+	        <th data-sortable="true" data-searchable="false" data-sorter="numericOnlyForHtmlLinks" title="Knotennummer des Routers">Knoten</th>
+	        <th data-sortable="true" data-searchable="false" title="Firmwareversion, die aktuell installiert ist">Firmware</th>
+	        <th data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="So lang ist der letzte Neustart her">Uptime in h</th>
+	        <th data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="Anzahl der Nachbarknoten, die dieser Knoten sieht">Nachbarn</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% for key, result in routerResults %}
+    <tr>
+        <td data-mtime="{{ result.doc.mtimehours  }}">{{ result.doc.mtimehours  }}</td>
+        <td><a href="#" data-toggle="modal" data-target="#info{{ key }}">{{ result.doc.hostname }}</a></td>
+        {% if (result.doc.olsr and result.doc.olsr.ipv4Config) %}
+            {% if result.doc.olsr.ipv4Config.mainIpAddress %}
+	           <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.mainIpAddress }}">
+	           <a href="http://{{ result.doc.olsr.ipv4Config.mainIpAddress }}/cgi-bin-status.html" target="_blank">
+	          {{ result.doc.weimarnetz.nodenumber }}
+	          </a>
+	        {% elseif result.doc.olsr.ipv4Config.mainIp %}
+	           <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.mainIp }}">
+	           <a href="http://{{ result.doc.olsr.ipv4Config.mainIp }}/cgi-bin-status.html" target="_blank">
+	          {{ result.doc.weimarnetz.nodenumber }}
+	          </a>
+            {% endif %}
+	    {% elseif (result.doc.weimarnetz.nodenumber)  %}
+		    <td>{{ result.doc.weimarnetz.nodenumber }}
+	    {%  else  %}
+	        <td>9999
+	    {% endif %}
+	    </td>
+	    <td>
+	    {% if (result.doc.firmware.description) %}
+		    {{ result.doc.firmware.description }}
+		{% else %}
+			{{ result.doc.firmware.revision }}
+			{% if (result.doc.firmware.fffversion) %}
+			 - {{ result.doc.firmware.fffversion }}
+			{% endif %}
+		{% endif %}
+	    </td>
+	    
+	    	<td data-uptime="{{ result.doc.system.uptime }}">{{ result.doc.system.uptime }}</td>
+	    
+	    <td>
+	        {{ result.doc.links|length|default('0') }}
+	        
+	    </td>
+    </tr>
+{% endfor %}
+
+    </tbody>
+</table>
+
+<script>
+jQuery('#routerTable').on('post-body.bs.table', function() {console.log('table rendered');})
+</script>
+
+<div class="infoboxes">
+{% for key, result in routerResults %}
+    <div class="modal fade" id="info{{ key }}" tabindex="-1" role="dialog" aria-labelledby="detailsModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Detailinformationen zu <strong>{{ result.doc.hostname }}</strong></h4>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs" id="dev{{ key }}">
+	          <li class="nav-item"><a class="nav-link active" href="#general{{ key }}" data-toggle="tab">Allgemein</a></li>
+	          <li class="nav-item"><a class="nav-link" href="#contact{{ key }}" data-toggle="tab">Kontakt</a></li>
+	          <li class="nav-item"><a class="nav-link" href="#network{{ key }}" data-toggle="tab">Netzwerk</a></li>
+	          <li class="nav-item"><a class="nav-link" href="#olsr{{ key }}" data-toggle="tab">OLSR</a></li>
+	          <li class="nav-item"><a class="nav-link" href="#map{{ key }}" data-toggle="tab" data-tab-url="https://map.weimarnetz.de/#detail?node={{ result.id }}">Karte</a></li>
+	        </ul>
+	        <div class="tab-content">
+	            <div class="tab-pane fade show active"  id="general{{ key }}">
+        		    <dl>
+        		      <dt>Gerät</dt>
+        		      <dd>{% if (result.doc.system and result.doc.system.sysinfo) %}{{ result.doc.system.sysinfo[1] }}{% endif %}
+        			</dd>
+        		  <dt>Hardware</dt><dd>{{ result.doc.hardware }}</dd>
+        		  {% if (result.doc.weimarnetz.nexthop ) %}
+        		    <dt>nächster Nachbar</dt><dd>{{ result.doc.weimarnetz.nexthop }}</dd>
+        		  {% endif %}
+        		  {% if (result.doc.weimarnetz.gateway) %}
+        		    <dt>Gateway</dt><dd>{{ result.doc.weimarnetz.gateway }}</dd>
+        		  {% endif %}
+        		  {% if (result.doc.weimarnetz.gatewaycost) %}
+        		    <dt>Gatewaykosten</dt><dd>{{ result.doc.weimarnetz.gatewaycost }}</dd>
+        		  {% endif %}
+        		</dl>
+	           </div>
+	           <div class="tab-pane fade" id="network{{ key }}">
+            		<dl class="slim">
+            		{% for iface in result.doc.interfaces %}
+            		  {% if (iface.ipaddr) %}
+                        <dt>{{  iface.ifname }}</dt><dd>{{ iface.ipaddr }}</dd>
+                        {% if (iface.ssid) %}
+                          <dt>SSID {{  iface.ifname }}</dt><dd>{{ iface.ssid }}</dd>
+                        {% endif %}
+            	      {% endif %}
+            		{% endfor %}
+            		</dl>
+            	      </div>
+            	      <div class="tab-pane fade" id="contact{{ key }}">
+            		<dl>
+            		  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.nickname) %}
+            		    <dt>Ansprechpartner</dt><dd>{{ result.doc.freifunk.contact.nickname }}</dd>
+            		  {% endif %}
+            		  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.mail) %}
+            		    <dt>Email</dt><dd>{{ result.doc.freifunk.contact.mail }}</dd>
+            		  {% endif %}
+            		  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.phone) %}
+            		    <dt>Telefon</dt><dd>{{ result.doc.freifunk.contact.phone }}</dd>
+            		  {% endif %}
+            		  {% if (result.doc.location) %}
+            		    <dt>Standort</dt><dd><a href="https://map.weimarnetz.de/#detail?node={{ result.id }}" target="_blank">{{ result.doc.location }}</a></dd>
+            		  {% endif %}
+            		</dl>
+            	      </div>
+            	      <div class="tab-pane fade" id="olsr{{ key }}">
+            		<dl class="table-display wide">
+            		{% if (result.doc.olsr) %}
+            			{% for olink in result.doc.olsr.links %}
+            			  <dt>{{  olink.destNodeId }}</dt><dd>{{ olink.destAddr }} (ETX {{ olink.etx }})</dd>
+            			{% endfor %}
+            		{% endif %}
+            		</dl>
+            	      </div>
+            	      <div class="tab-pane fade" id="map{{ key }}">
+            		<div><iframe class="map" id="imap{{ key }}"></iframe></div>
+            		<script type="text/javascript">
+                		var link = document.querySelectorAll('a[href="#map{{ key }}"]');
+                		link[0].addEventListener('shown.bs.tab', function () {
+                		  var el = document.getElementById("imap{{ key }}");
+                		  lat = parseFloat("{{ result.doc.latitude }}");
+                		  lon = parseFloat("{{ result.doc.longitude }}");
+                		  lat1 = lat - 0.0001;
+                		  lat2 = lat + 0.0001;
+                		  lon1 = lon - 0.0001;
+                		  lon2 = lon + 0.0001;
+                		  console.log(lon1);
+                		  el.setAttribute('src', 'https://map.weimarnetz.de/mapnohostdetails.html#bbox=' + lat1 + ',' + lon1 + ',' + lat2 + ',' + lon2); 
+                		});
+            		 </script>
+            	      </div>
+	              </div>
+              </div>
+              <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+</div>
+
+<script>
+"use strict";
+
+/**
+ * @author: Brian Huisman
+ * @webSite: http://www.greywyvern.com
+ * JS functions to allow natural sorting on bootstrap-table columns
+ * add data-sorter="alphanum" or data-sorter="numericOnly" to any th
+ */
+function alphanum(a, b) {
+  function chunkify(t) {
+    var tz = [];
+    var y = -1;
+    var n = 0;
+
+    for (var i = 0; i <= t.length; i++) {
+      var _char = t.charAt(i);
+
+      var charCode = _char.charCodeAt(0);
+
+      var m = charCode === 46 || charCode >= 48 && charCode <= 57;
+
+      if (m !== n) {
+        tz[++y] = '';
+        n = m;
+      }
+
+      tz[y] += _char;
+    }
+
+    return tz;
+  }
+
+  function stringfy(v) {
+    if (typeof v === 'number') {
+      v = "".concat(v);
+    }
+
+    if (!v) {
+      v = '';
+    }
+
+    return v;
+  }
+
+  var aa = chunkify(stringfy(a));
+  var bb = chunkify(stringfy(b));
+
+  for (var x = 0; aa[x] && bb[x]; x++) {
+    if (aa[x] !== bb[x]) {
+      var c = Number(aa[x]);
+      var d = Number(bb[x]);
+
+      if (c === aa[x] && d === bb[x]) {
+        return c - d;
+      }
+
+      return aa[x] > bb[x] ? 1 : -1;
+    }
+  }
+
+  return aa.length - bb.length;
+}
+
+function numericOnlyForHtmlLinks(a, b) {
+  function stripNonNumber(s) {
+    s = s.replace(new RegExp(/<.*>\s*([0-9]*)\s*<\/.*>/g), '$1');
+    return parseInt(s, 10);
+  }
+
+  return stripNonNumber(a) - stripNonNumber(b);
+}
+
+function numericOnly(a, b) {
+  function stripNonNumber(s) {
+    s = s.replace(new RegExp(/<[^0-9]/g), '');
+    return parseInt(s, 10);
+  }
+
+  return stripNonNumber(a) - stripNonNumber(b);
+}
+</script>

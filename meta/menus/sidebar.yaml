@@ -81,9 +81,22 @@ items:
                     isExternal: '0'
             -
                 title: 'OLSR Verbindungen'
+                nesting: ''
                 type: cms-page
+                url: ''
                 code: ''
                 reference: status/olsr-connections
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: Monitoring
+                type: cms-page
+                code: ''
+                reference: status/monitoring
                 viewBag:
                     isHidden: '0'
                     cssClass: ''

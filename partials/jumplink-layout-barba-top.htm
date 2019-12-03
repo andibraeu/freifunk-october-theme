@@ -20,6 +20,7 @@ description = "top html code for barba layouts"
         <link rel="alternate" type="application/atom+xml" title="Allgemeiner Freifunk Blog" href="/feeds/communities" />
                 
         <link href="{{ ['assets/scss/theme.scss'] | theme }}" rel="stylesheet">
+        <link href="{{ ['assets/vendor/bootstrap-table/dist/bootstrap-table.min.css'] | theme }}" rel="stylesheet">
         <link rel="stylesheet" href="/plugins/martin/ssbuttons/assets/css/social-sharing-ssb.css">
     </head>
     <body id="{{ str_studly(this.page.title) | lower | replace({'/':'_'}) }}" data-spy="scroll">

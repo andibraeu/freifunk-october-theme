@@ -22,6 +22,7 @@
     "simpler-sidebar": "^2.2.0",
     "bootstrap": "v4.0.0-alpha.6",
     "bootstrap-backward": "^4.0.0-alpha.6",
+    "bootstrap-table" : "^1.15.5",
     "jumplink-components": "JumpLinkNetwork/jumplink-components#master",
     "barba.js": "luruke/barba.js#^1.0.0",
     "gsap": "^1.19.1",

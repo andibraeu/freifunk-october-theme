@@ -2,7 +2,10 @@
 ==
 <?php
 function onStart() {
-    $this['icingaResults'] = $this->get_icinga_stats();
+    $cacheTtl = 2; // 2 minutes cache ttl
+    $this['icingaResults'] = Cache::remember('icingaResults', $cacheTtl, function() {
+        return $this->get_icinga_stats();
+    });
 }
 
 function get_icinga_stats() {
@@ -38,7 +41,6 @@ function get_icinga_stats() {
     
 	$states_by_host = array();
 
-    print($code);
     if ($code == 200) {
 		$response = json_decode($response, true);
 		foreach($response['results'] as $service) {
