@@ -94,9 +94,13 @@ items:
                     isExternal: '0'
             -
                 title: Monitoring
+                nesting: ''
                 type: cms-page
+                url: ''
                 code: ''
                 reference: status/monitoring
+                cmsPage: ''
+                replace: ''
                 viewBag:
                     isHidden: '0'
                     cssClass: ''
@@ -230,16 +234,56 @@ items:
         cmsPage: ''
         replace: ''
         viewBag:
-            isHidden: '0'
+            isHidden: '1'
             cssClass: router
             isExternal: '0'
+    -
+        title: 'Firmware Downloads'
+        nesting: ''
+        type: url
+        url: '#'
+        code: ''
+        reference: ''
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+        items:
+            -
+                title: Neuinstallationen
+                nesting: ''
+                type: url
+                url: 'https://weimarnetz.de/freifunk/firmware/factory/'
+                code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '1'
+            -
+                title: Upgrades
+                nesting: ''
+                type: url
+                url: 'https://weimarnetz.de/freifunk/firmware/sysupgrade/'
+                code: ''
+                reference: ''
+                cmsPage: ''
+                replace: ''
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '1'
     -
         title: Termine
         nesting: ''
         type: cms-page
         url: ''
         code: ''
-        reference: PluginProevents/termine
+        reference: PluginProevents/kalender
         cmsPage: ''
         replace: ''
         viewBag:
@@ -299,46 +343,6 @@ items:
                     isHidden: '0'
                     cssClass: telegram
                     isExternal: '1'
-    -
-        title: Weiteres
-        nesting: ''
-        type: url
-        url: '#'
-        code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
-        viewBag:
-            isHidden: '0'
-            cssClass: weiteres
-            isExternal: '0'
-        items:
-            -
-                title: Datenschutz
-                nesting: ''
-                type: url
-                url: /datenschutz
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: datenschutz
-                    isExternal: '0'
-            -
-                title: Impressum
-                nesting: ''
-                type: cms-page
-                url: ''
-                code: ''
-                reference: legal/Impressum
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: impressum
-                    isExternal: '0'
             -
                 title: Credits
                 nesting: ''
@@ -352,3 +356,29 @@ items:
                     isHidden: '0'
                     cssClass: credits
                     isExternal: '0'
+    -
+        title: Impressum
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: legal/Impressum
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: impressum
+            isExternal: '0'
+    -
+        title: Datenschutz
+        nesting: ''
+        type: url
+        url: /datenschutz
+        code: ''
+        reference: ''
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: datenschutz
+            isExternal: '0'
