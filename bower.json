@@ -20,13 +20,12 @@
   "dependencies": {
     "tether": "^1.4.0",
     "simpler-sidebar": "^2.2.0",
-    "bootstrap": "v4.0.0-alpha.6",
-    "bootstrap-backward": "^4.0.0-alpha.6",
+    "bootstrap": "^4.4.1",
     "bootstrap-table" : "^1.15.5",
     "jumplink-components": "JumpLinkNetwork/jumplink-components#master",
     "barba.js": "luruke/barba.js#^1.0.0",
     "gsap": "^1.19.1",
-    "jquery": "2",
+    "jquery": "^3",
     "leaflet": "^1.0.3",
     "slick-carousel": "^1.6.0",
     "prism": "^1.6.0",
@@ -36,8 +35,7 @@
     "hyphenator": "mnater/Hyphenator#^5.2.0"
   },
   "resolutions": {
-    "bootstrap": "v4.0.0-alpha.6",
-    "bootstrap-backward": "^4.0.0-alpha.6",
-    "jquery": "2"
+    "bootstrap": "^4.4.1",
+    "jquery": "^3"
   }
 }

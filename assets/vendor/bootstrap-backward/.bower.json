@@ -1,6 +1,5 @@
 {
   "name": "bootstrap-backward",
-  "version": "4.0.0-alpha.6",
   "description": "Backward compatibility for older scss versions or other scss implementations for Twitter Bootstrap 4 Alpha 5.",
   "keywords": [
     "css",
@@ -32,15 +31,15 @@
   "dependencies": {
     "jquery": "1.9.1 - 3",
     "tether": "^1.3.7",
-    "sass-autoprefixer": "^1.0.1"
+    "sass-prefix-mixins": "JumpLinkNetwork/sass-prefix-mixins#master"
   },
-  "_release": "4.0.0-alpha.6",
+  "_release": "3b35227d3d",
   "_resolution": {
-    "type": "version",
-    "tag": "v4.0.0-alpha.6",
-    "commit": "debc9046273d9af93980a727524a3654816f64b8"
+    "type": "branch",
+    "branch": "v4-0-0-alpha-5-scss-backward",
+    "commit": "3b35227d3d1d324e6a9da5b8a49e0f187d3a2fe6"
   },
-  "_source": "https://github.com/JumpLinkNetwork/bootstrap-backward.git",
-  "_target": "^4.0.0-alpha.6",
-  "_originalSource": "bootstrap-backward"
+  "_source": "git://github.com/JumpLinkNetwork/bootstrap-backward.git",
+  "_target": "v4-0-0-alpha-5-scss-backward",
+  "_originalSource": "JumpLinkNetwork/bootstrap-backward"
 }

@@ -1,9 +1,9 @@
 /*!
- * VERSION: 0.1.2
- * DATE: 2017-06-29
+ * VERSION: 0.2.1
+ * DATE: 2018-02-15
  * UPDATES AND DOCS AT: http://greensock.com
  *
- * @license Copyright (c) 2008-2017, GreenSock. All rights reserved.
+ * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
  * PixiPlugin is subject to the terms at http://greensock.com/standard-license or for
  * Club GreenSock members, the software agreement that was issued with your membership.
  *
@@ -228,6 +228,9 @@ var _gsScope = (typeof module !== "undefined" && module.exports && typeof global
 				combine = v.combineCMF && !("colorMatrixFilter" in v && !v.colorMatrixFilter),
 				i, matrix, startMatrix;
 			startMatrix = filter.matrix;
+			if (v.resolution) {
+				filter.resolution = v.resolution;
+			}
 			if (v.matrix && v.matrix.length === startMatrix.length) {
 				matrix = v.matrix;
 				if (cache.contrast !== 1) {
@@ -385,13 +388,13 @@ var _gsScope = (typeof module !== "undefined" && module.exports && typeof global
         priority: 0,
         API: 2,
 		global: true,
-        version: "0.1.2",
+        version: "0.2.1",
 
         init: function (target, values, tween, index) {
             if (!target instanceof _gsScope.PIXI.DisplayObject) {
                 return false;
             }
-            var context, axis, value, colorMatrix, filter, p, padding, colorSetter, i, data;
+            var context, axis, value, colorMatrix, filter, p, padding, colorSetter, i, data, pt;
             for (p in values) {
                 context = _contexts[p];
                 value = values[p];
@@ -436,6 +439,13 @@ var _gsScope = (typeof module !== "undefined" && module.exports && typeof global
 					} else {
 						_addColorTween(target, p, value, colorSetter, this);
 					}
+                } else if (p === "autoAlpha") {
+					this._firstPT = pt = {t: {setRatio:function() { target.visible = !!target.alpha; }}, p: "setRatio", s: 0, c: 1, f: 1, pg: 0, n: "visible", pr: 0, m: 0, _next:this._firstPT};
+					if (pt._next) {
+						pt._next._prev = pt;
+					}
+					this._addTween(target, "alpha", target.alpha, value, "alpha");
+					this._overwriteProps.push("alpha", "visible");
                 } else {
 					this._addTween(target, p, target[p], value, p);
                 }
