@@ -47,8 +47,10 @@ function get_router_stats() {
                 $item['doc']['weimarnetz']['nodenumber'] = $this->get_node_number($item['doc']['olsr']['ipv4Config']['mainIp']);
             }
         }
-        if (is_array($item['doc']['system']['uptime'])) {
-            $item['doc']['system']['uptime'] = floor($item['doc']['system']['uptime'][0]/3600);
+        if (array_key_exists('system', $item['doc']) && array_key_exists('uptime', $item['doc']['system']) && is_array($item['doc']['system']['uptime'])) {
+            $item['doc']['system']['uptime'] = floor($item['doc']['system']['uptime'][0] / 3600);
+        } else {
+            $item['doc']['system']['uptime'] = -1;
         }
     }, strtotime("now"));
     return $valid_sorted_routers;
@@ -140,9 +142,9 @@ Router erreichbar: {{ activeRouters }}</p>
 			{% endif %}
 		{% endif %}
 	    </td>
-	    
-	    	<td data-uptime="{{ result.doc.system.uptime }}">{{ result.doc.system.uptime }}</td>
-	    
+	    {% if (result.doc.system and result.doc.system.uptime) %}
+	    	<td data-uptime="{{ result.doc.system.uptime | join }}">{{ result.doc.system.uptime | join }}</td>
+	    {% endif %}
 	    <td>
 	        {{ result.doc.links|length|default('0') }}
 	        
@@ -152,10 +154,6 @@ Router erreichbar: {{ activeRouters }}</p>
 
     </tbody>
 </table>
-
-<script>
-jQuery('#routerTable').on('post-body.bs.table', function() {console.log('table rendered');})
-</script>
 
 <div class="infoboxes">
 {% for key, result in routerResults %}
@@ -257,6 +255,11 @@ jQuery('#routerTable').on('post-body.bs.table', function() {console.log('table r
 {% endfor %}
 </div>
 
+{% put scripts %}
+<script>
+//$('#routertable').bootstrapTable({columns: []});
+</script>
+
 <script>
 "use strict";
 
@@ -339,3 +342,4 @@ function numericOnly(a, b) {
   return stripNonNumber(a) - stripNonNumber(b);
 }
 </script>
+{% endput %}
