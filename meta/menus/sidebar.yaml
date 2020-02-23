@@ -358,27 +358,19 @@ items:
                     isExternal: '0'
     -
         title: Impressum
-        nesting: ''
         type: cms-page
-        url: ''
         code: ''
         reference: legal/Impressum
-        cmsPage: ''
-        replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: impressum
+            cssClass: legal
             isExternal: '0'
     -
         title: Datenschutz
-        nesting: ''
         type: url
         url: /datenschutz
         code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: datenschutz
+            cssClass: legal
             isExternal: '0'
