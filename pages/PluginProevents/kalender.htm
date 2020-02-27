@@ -5,7 +5,7 @@ is_hidden = 0
 
 [proEventCalendar]
 eventpage = "PluginProevents/event-details"
-style = "smallcal"
+style = "responsive"
 calendar = "all_calendars"
 eurocal = 1
 ical = 1
@@ -15,4 +15,4 @@ ical = 1
 <link rel="stylesheet" href="/plugins/radiantweb/proevents/assets/css/proevents_tooltips.css">
 <link rel="stylesheet" href="/plugins/radiantweb/proevents/assets/css/proevents_modal.css">
 {% endput %}
-{% partial 'PluginProevents/calendar' __SELF__=proEventCalendar %}
+{% component 'proEventCalendar' %}
