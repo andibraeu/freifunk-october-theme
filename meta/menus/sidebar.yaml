@@ -94,16 +94,12 @@ items:
                     isExternal: '0'
             -
                 title: Monitoring
-                nesting: ''
                 type: cms-page
-                url: ''
                 code: ''
                 reference: status/monitoring
-                cmsPage: ''
-                replace: ''
                 viewBag:
                     isHidden: '0'
-                    cssClass: ''
+                    cssClass: no-barba
                     isExternal: '0'
     -
         title: 'Über Freifunk'
@@ -279,16 +275,12 @@ items:
                     isExternal: '1'
     -
         title: Termine
-        nesting: ''
         type: cms-page
-        url: ''
         code: ''
         reference: PluginProevents/kalender
-        cmsPage: ''
-        replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: termine
+            cssClass: 'termine no-barba'
             isExternal: '0'
     -
         title: Links
@@ -358,18 +350,26 @@ items:
                     isExternal: '0'
     -
         title: Impressum
+        nesting: ''
         type: cms-page
+        url: ''
         code: ''
         reference: legal/Impressum
+        cmsPage: ''
+        replace: ''
         viewBag:
             isHidden: '0'
             cssClass: legal
             isExternal: '0'
     -
         title: Datenschutz
+        nesting: ''
         type: url
         url: /datenschutz
         code: ''
+        reference: ''
+        cmsPage: ''
+        replace: ''
         viewBag:
             isHidden: '0'
             cssClass: legal
