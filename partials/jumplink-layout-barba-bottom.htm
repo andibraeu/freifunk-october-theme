@@ -28,6 +28,8 @@ description = "bottom html code for barba layouts"
          # Disabled because to slow:
          # * 'assets/vendor/hyphenator/Hyphenator.js',
          # * 'assets/vendor/hyphenator/patterns/de.js',
+         # Disabled because of string problems
+         # * 'assets/vendor/moment/min/moment-with-locales.js',
         #}
         <script src="{{ [
             'assets/vendor/jquery/dist/jquery.js',
@@ -41,12 +43,11 @@ description = "bottom html code for barba layouts"
             'assets/vendor/slick-carousel/slick/slick.js',
             'assets/vendor/jquery-touch-events/src/jquery.mobile-events.js',
             'assets/vendor/prism/prism.js',
-            'assets/vendor/moment/min/moment-with-locales.js',
             'assets/vendor/jumplink-components/javascript/styleicons.js',
             'assets/vendor/jumplink-components/javascript/utilities.js',
             'assets/vendor/jumplink-components/javascript/dataApi.js',
         ]|theme }}" ></script>
-        
+        <script src="{{ 'assets/vendor/moment/min/moment-with-locales.min.js'|theme }}"></script>
         <script>
             L.Icon.Default.imagePath = "/themes/{{this.theme.dirname}}/assets/vendor/leaflet/dist/images/";
         </script>

@@ -721,5 +721,6 @@ window.onerror = function(message, url, lineNumber) {
   return true;
 };
 
+
 // run init as soon as jQuery is ready
 $(init);
