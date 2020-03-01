@@ -94,9 +94,13 @@ items:
                     isExternal: '0'
             -
                 title: Monitoring
+                nesting: ''
                 type: cms-page
+                url: ''
                 code: ''
                 reference: status/monitoring
+                cmsPage: ''
+                replace: ''
                 viewBag:
                     isHidden: '0'
                     cssClass: no-barba
@@ -162,6 +166,17 @@ items:
                 code: ''
                 reference: ueber-weimarnetz-spenden
                 cmsPage: ''
+                replace: '0'
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: Mailinglisten
+                nesting: '0'
+                type: static-page
+                code: ''
+                reference: mailinglisten
                 replace: '0'
                 viewBag:
                     isHidden: '0'
@@ -275,9 +290,13 @@ items:
                     isExternal: '1'
     -
         title: Termine
+        nesting: ''
         type: cms-page
+        url: ''
         code: ''
         reference: PluginProevents/kalender
+        cmsPage: ''
+        replace: ''
         viewBag:
             isHidden: '0'
             cssClass: 'termine no-barba'

@@ -7,5 +7,9 @@ snippetProperties[src][title] = "Url of site to embed"
 snippetProperties[src][type] = "string"
 snippetProperties[src][default] = "https://mesh.freifunknord.de/"
 snippetProperties[src][options][] = ""
+snippetProperties[style][title] = "Style of this iframe"
+snippetProperties[style][type] = "string"
+snippetProperties[style][default] = "position:absolute;left:0;top:0;height:100vh;width:100vw"
+snippetProperties[style][options][] = ""
 ==
-<iframe src="{{src}}" frameborder="0" style="position:absolute;left:0;top:0;height:100vh;width:100vw" height="100vh" width="100vw"></iframe>
+<iframe src="{{src}}" frameborder="0" style="{{style}}" height="100vh" width="100vw"></iframe>
