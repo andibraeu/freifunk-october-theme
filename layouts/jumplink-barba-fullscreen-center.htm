@@ -3,6 +3,8 @@ description = "For fullsceen pages with centered content"
 [staticPage]
 useContent = 1
 default = 0
+
+[piwik]
 ==
 {% partial 'jumplink-layout-barba-top' %}
     <div class="of-parent-100 d-flex align-items-center">
@@ -11,3 +13,4 @@ default = 0
         </div>
     </div>
 {% partial 'jumplink-layout-barba-bottom' %}
+{% component 'piwik' %}

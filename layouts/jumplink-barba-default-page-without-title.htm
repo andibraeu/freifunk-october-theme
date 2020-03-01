@@ -1,6 +1,10 @@
 description = "For content pages without title"
 
 [staticPage]
+useContent = 1
+default = 0
+
+[piwik]
 ==
 {% partial 'jumplink-layout-barba-top' %}
     <div class="container">
@@ -11,3 +15,4 @@ description = "For content pages without title"
         </div>
     </div>
 {% partial 'jumplink-layout-barba-bottom' %}
+{% component 'piwik' %}

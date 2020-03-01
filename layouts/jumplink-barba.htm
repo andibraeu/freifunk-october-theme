@@ -3,6 +3,8 @@ description = "Layout without container and tilte"
 [staticPage]
 useContent = 1
 default = 0
+
+[piwik]
 ==
 <?php
 // TODO wird diese funktion zweimal aufgerufen?
@@ -39,3 +41,4 @@ function onMailSent() {
 {% partial 'jumplink-layout-barba-top' %}
     {% page %}
 {% partial 'jumplink-layout-barba-bottom' %}
+{% component 'piwik' %}

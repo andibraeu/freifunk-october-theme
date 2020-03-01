@@ -1,6 +1,10 @@
 description = "Default layout for fluid content pages"
 
 [staticPage]
+useContent = 1
+default = 0
+
+[piwik]
 ==
 {% partial 'jumplink-layout-barba-top' %}
     <div class="container-fluid">
@@ -14,3 +18,4 @@ description = "Default layout for fluid content pages"
         </div>
     </div>
 {% partial 'jumplink-layout-barba-bottom' %}
+{% component 'piwik' %}
