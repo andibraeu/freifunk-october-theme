@@ -10,14 +10,13 @@ description = "top html code for barba layouts"
         <title>{{this.theme.site_name}} - {{ this.page.title }}</title>
         <meta name="description" content="{{ this.page.meta_description }}">
         <meta name="title" content="{{ this.page.meta_title }}">
-        <meta name="author" content="Pascal Garber">
+        <meta name="author" content="Weimarnetz">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         {% partial 'xmpp-client' %}
         {% partial 'jumplink-favicons' %}
         {% styles %}
         
-        <link rel="alternate" type="application/atom+xml" title="Freifunk Communities Feeds" href="/feeds/freifunk" />
-        <link rel="alternate" type="application/atom+xml" title="Allgemeiner Freifunk Blog" href="/feeds/communities" />
+        <link rel="alternate" type="application/atom+xml" title="Weimarnetz Blog" href="/blog/rss.xml" />
                 
         <link href="{{ ['assets/scss/theme.scss'] | theme }}" rel="stylesheet">
         <link href="{{ ['assets/vendor/bootstrap-table/dist/bootstrap-table.min.css'] | theme }}" rel="stylesheet">
