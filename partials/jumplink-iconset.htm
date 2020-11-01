@@ -1,9 +1,9 @@
 [viewBag]
 ==
 {% if '.svg' in name %}
-    {% set snippet= '../assets/iconset/' ~ name %}
+    {% set snippet= 'assets/iconset/' ~ name %}
 {% else %}
-    {% set snippet= '../assets/iconset/' ~ name ~ '.svg' %}
+    {% set snippet= 'assets/iconset/' ~ name ~ '.svg' %}
 {% endif %}
 
 {% if not class is defined %}
@@ -35,5 +35,6 @@
 {% endif %}
 
 <div aria-hidden='true' class='iconset {{name}} {{direction}} {{class}} {{color}} w-{{size}} h-{{size}}'>
-    {% partial snippet %}
+{# partial snippet #}
+^
 </div>

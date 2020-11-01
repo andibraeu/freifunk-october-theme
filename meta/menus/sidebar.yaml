@@ -175,9 +175,22 @@ items:
                 title: Mailinglisten
                 nesting: '0'
                 type: static-page
+                url: null
                 code: ''
                 reference: mailinglisten
+                cmsPage: null
                 replace: '0'
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: 'Pico Peering Agreement'
+                nesting: 0
+                type: static-page
+                code: ''
+                reference: pico-peering-agreement
+                replace: 0
                 viewBag:
                     isHidden: '0'
                     cssClass: ''

@@ -28,6 +28,8 @@ function get_icinga_stats() {
             CURLOPT_USERPWD => $username . ":" . $password,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => count($data),
+            CURLOPT_CONNECTTIMEOUT_MS => 1000,
+            CURLOPT_TIMEOUT_MS => 3000,
             CURLOPT_POSTFIELDS => json_encode($data)
     ));
     
