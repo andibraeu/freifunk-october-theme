@@ -38,6 +38,8 @@ description = "catalog-plugin/custom product grid item"
                 
                     {% set factory = product.factory %}
                     {% set sysupgrade = product.sysupgrade %}
+										{% set target = product.target %}
+										{% set sub_target = product.sub_target %}
                 
                     {% if hw_version is defined and hw_version|length > 0 %}
                         {% if '{{router_version}}' in product.factory %}
@@ -53,7 +55,7 @@ description = "catalog-plugin/custom product grid item"
                     {% endif %}
             
                     {% if factory is defined and factory|length > 0 %}
-                        {% set factory = factory | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{factory_extension}}': product.factory_extension, '{{router_version}}': hw_version}) %}
+										{% set factory = factory | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{factory_extension}}': product.factory_extension, '{{router_version}}': hw_version, '{{target}}': target, '{{sub_target}}': sub_target}) %}
                         
                         <a href="{{factory}}" class="factory">Installation <span class="text-uppercase">{{hw_version}}</span></a>
                     {% endif %}
@@ -64,7 +66,7 @@ description = "catalog-plugin/custom product grid item"
                     
                     {% if sysupgrade is defined and sysupgrade|length > 0 %}
                     
-                        {% set sysupgrade = sysupgrade | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{sysupgrade_extension}}': product.sysupgrade_extension, '{{router_version}}': hw_version}) %}
+										{% set sysupgrade = sysupgrade | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{sysupgrade_extension}}': product.sysupgrade_extension, '{{router_version}}': hw_version, '{{target}}': target, '{{sub_target}}': sub_target}) %}
                     
                         <a href="{{sysupgrade}}" class="sysupgrade">Update <span class="text-uppercase">{{hw_version}}</span></a>
                     {% endif %}

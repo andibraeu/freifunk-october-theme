@@ -133,7 +133,10 @@ Router erreichbar: {{ activeRouters }}</p>
 	    {% endif %}
 	    </td>
 	    <td>
-	    {% if (result.doc.firmware.description) %}
+			{% if (result.doc.firmware.packageDescription and result.doc.firmware.description) %}	
+				Packages: {{ result.doc.firmware.packageDescription }} <br/>
+				OpenWrt: {{ result.doc.firmware.description }}
+	    {% elseif (result.doc.firmware.description) %}
 		    {{ result.doc.firmware.description }}
 		{% else %}
 			{{ result.doc.firmware.revision }}

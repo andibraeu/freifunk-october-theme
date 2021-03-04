@@ -23,6 +23,8 @@
     
         {% set factory = product.factory %}
         {% set sysupgrade = product.sysupgrade %}
+				{% set target = product.target %}
+				{% set sub_target = product.sub_target %}
         {% set downloadObject = {} %}
         {% set factoryObject = {} %}
         {% set sysupgradeObject = {} %}
@@ -59,14 +61,14 @@
         {% set sysupgradeObject = sysupgradeObject|merge({'versionSlug': hw_version}) %}
     
         {% if factory is defined and factory|length > 0 %}
-            {% set factory = factory | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{factory_extension}}': product.factory_extension, '{{router_version}}': hw_version}) %}
+				{% set factory = factory | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{factory_extension}}': product.factory_extension, '{{router_version}}': hw_version, '{{target}}': target, '{{sub_target}}': sub_target}) %}
             
             {% set downloadObject = downloadObject|merge({'factoryUrl': factory}) %}
             {% set factoryObject = factoryObject|merge({'url': factory}) %}
         {% endif %}
             
         {% if sysupgrade is defined and sysupgrade|length > 0 %}
-            {% set sysupgrade = sysupgrade | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{sysupgrade_extension}}': product.sysupgrade_extension, '{{router_version}}': hw_version}) %}
+				{% set sysupgrade = sysupgrade | replace({'{{base_fw_url}}': this.theme.router_base_fw_url, '{{version}}': this.theme.router_fw_version, '{{brand}}': product.brand.slug, '{{name}}': name, '{{sysupgrade_extension}}': product.sysupgrade_extension, '{{router_version}}': hw_version, '{{target}}': target, '{{sub_target}}': sub_target}) %}
         
             {% set downloadObject = downloadObject|merge({'sysupgradeUrl': sysupgrade}) %}
             {% set sysupgradeObject = sysupgradeObject|merge({'url': sysupgrade}) %}
