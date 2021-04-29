@@ -1,5 +1,4 @@
 static-pages:
-    news: {  }
     willkommen: {  }
     map-2: {  }
     status:
@@ -12,3 +11,5 @@ static-pages:
         mailinglisten: {  }
     nutzungsbedingungen: {  }
     pico-peering-agreement: {  }
+    kontakt: {  }
+    news: {  }

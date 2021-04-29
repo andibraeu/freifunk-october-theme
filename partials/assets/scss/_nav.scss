@@ -1,0 +1,32 @@
+.dropdown-toggle {
+     &::after {
+         border: none;
+    }
+}
+
+.nav-item.active {
+    color: $green !important;    
+}
+
+.navbar-toggleable-md .navbar-nav .nav-link {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+#main-navbar {
+    .background-01 {
+        height: 2rem;
+        width: 100%;
+    }
+}
+
+.navbar-brand {
+    font-size: $font-size-base;
+}
+
+.navbar-toggler-right {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    transition: all 0.5s;
+}

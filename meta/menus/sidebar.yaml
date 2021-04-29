@@ -14,106 +14,113 @@ items:
             cssClass: home
             isExternal: '0'
     -
-        title: News
-        nesting: ''
-        type: url
-        url: /news
-        code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
-        viewBag:
-            isHidden: '0'
-            cssClass: news
-            isExternal: '0'
-    -
-        title: Blog
+        title: Termine
         nesting: ''
         type: cms-page
         url: ''
         code: ''
-        reference: blog/all-posts
+        reference: PluginProevents/kalender
         cmsPage: ''
         replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: 'termine no-barba'
+            isExternal: '0'
+    -
+        title: Kontakt
+        nesting: null
+        type: url
+        url: /Kontakt
+        code: ''
+        reference: null
+        cmsPage: null
+        replace: null
         viewBag:
             isHidden: '0'
             cssClass: ''
             isExternal: '0'
     -
-        title: Status
+        title: Knotenkarte
+        nesting: null
+        type: url
+        url: /knotenkarte
+        code: ''
+        reference: null
+        cmsPage: null
+        replace: null
+        viewBag:
+            isHidden: '0'
+            cssClass: map
+            isExternal: '0'
+    -
+        title: 'Unser Wiki'
         nesting: ''
         type: url
-        url: '#'
+        url: 'https://wireless.subsignal.org'
         code: ''
         reference: ''
         cmsPage: ''
         replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: status
+            cssClass: freifunk-wiki
+            isExternal: '1'
+    -
+        title: News
+        type: url
+        url: /
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
             isExternal: '0'
         items:
             -
-                title: Karte
-                nesting: ''
+                title: Weimarnetz-News
+                nesting: null
+                type: cms-page
+                url: null
+                code: ''
+                reference: blog/all-posts
+                cmsPage: null
+                replace: null
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: Community-News
+                nesting: null
                 type: url
-                url: /map
+                url: /community-news
                 code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
+                reference: null
+                cmsPage: null
+                replace: null
                 viewBag:
                     isHidden: '0'
-                    cssClass: map
+                    cssClass: news
                     isExternal: '0'
             -
-                title: 'Dienste im Weimarnetz'
-                nesting: '0'
+                title: 'Mailinglisten - Newsportal'
+                nesting: 0
                 type: static-page
-                url: ''
                 code: ''
-                reference: status-services
-                cmsPage: ''
-                replace: '0'
+                reference: mailinglisten
+                replace: 0
                 viewBag:
                     isHidden: '0'
                     cssClass: ''
-                    isExternal: '0'
-            -
-                title: 'OLSR Verbindungen'
-                nesting: ''
-                type: cms-page
-                url: ''
-                code: ''
-                reference: status/olsr-connections
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: ''
-                    isExternal: '0'
-            -
-                title: Monitoring
-                nesting: ''
-                type: cms-page
-                url: ''
-                code: ''
-                reference: status/monitoring
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: no-barba
                     isExternal: '0'
     -
-        title: 'Über Freifunk'
-        nesting: ''
+        title: Mitmachen
+        nesting: null
         type: url
         url: '#'
         code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
+        reference: null
+        cmsPage: null
+        replace: null
         viewBag:
             isHidden: '0'
             cssClass: ueber-freifunk
@@ -121,65 +128,52 @@ items:
         items:
             -
                 title: 'Was ist Freifunk?'
-                nesting: '0'
+                nesting: 0
                 type: static-page
-                url: ''
+                url: null
                 code: ''
                 reference: ueber-freifunk-was-ist-freifunk
-                cmsPage: ''
-                replace: '0'
+                cmsPage: null
+                replace: 0
                 viewBag:
                     isHidden: '0'
                     cssClass: was-ist-freifunk
                     isExternal: '0'
             -
-                title: Mitmachen
-                nesting: '0'
-                type: static-page
-                url: ''
-                code: ''
-                reference: mitmachen
-                cmsPage: ''
-                replace: '0'
-                viewBag:
-                    isHidden: '0'
-                    cssClass: ''
-                    isExternal: '0'
-            -
-                title: Mithelfen
-                nesting: '0'
-                type: static-page
-                url: ''
-                code: ''
-                reference: ueber-freifunk-mithelfen
-                cmsPage: ''
-                replace: '0'
-                viewBag:
-                    isHidden: '0'
-                    cssClass: ''
-                    isExternal: '0'
-            -
-                title: Spenden
-                nesting: '0'
-                type: static-page
-                url: ''
-                code: ''
-                reference: ueber-weimarnetz-spenden
-                cmsPage: ''
-                replace: '0'
-                viewBag:
-                    isHidden: '0'
-                    cssClass: ''
-                    isExternal: '0'
-            -
-                title: Mailinglisten
-                nesting: '0'
+                title: 'Wie kann ich mitmachen?'
+                nesting: 0
                 type: static-page
                 url: null
                 code: ''
-                reference: mailinglisten
+                reference: mitmachen
                 cmsPage: null
-                replace: '0'
+                replace: 0
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: 'Wie kann ich mithelfen?'
+                nesting: 0
+                type: static-page
+                url: null
+                code: ''
+                reference: ueber-freifunk-mithelfen
+                cmsPage: null
+                replace: 0
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: 'Wie kann ich spenden?'
+                nesting: 0
+                type: static-page
+                url: null
+                code: ''
+                reference: ueber-weimarnetz-spenden
+                cmsPage: null
+                replace: 0
                 viewBag:
                     isHidden: '0'
                     cssClass: ''
@@ -188,22 +182,24 @@ items:
                 title: 'Pico Peering Agreement'
                 nesting: 0
                 type: static-page
+                url: null
                 code: ''
                 reference: pico-peering-agreement
+                cmsPage: null
                 replace: 0
                 viewBag:
                     isHidden: '0'
                     cssClass: ''
                     isExternal: '0'
     -
-        title: Entwicklung
-        nesting: ''
+        title: Technik
+        nesting: null
         type: url
         url: '#'
         code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
+        reference: null
+        cmsPage: null
+        replace: null
         viewBag:
             isHidden: '0'
             cssClass: entwicklung
@@ -236,6 +232,19 @@ items:
                     cssClass: ''
                     isExternal: '1'
             -
+                title: Router
+                nesting: null
+                type: url
+                url: /category/router
+                code: ''
+                reference: null
+                cmsPage: null
+                replace: null
+                viewBag:
+                    isHidden: '0'
+                    cssClass: router
+                    isExternal: '0'
+            -
                 title: Buildbot
                 nesting: ''
                 type: url
@@ -249,29 +258,69 @@ items:
                     cssClass: ''
                     isExternal: '1'
     -
-        title: Router
-        nesting: ''
-        type: url
-        url: /category/router
-        code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
-        viewBag:
-            isHidden: '1'
-            cssClass: router
-            isExternal: '0'
-    -
-        title: 'Firmware Downloads'
-        nesting: ''
+        title: 'Dienste und Monitoring'
+        nesting: null
         type: url
         url: '#'
         code: ''
-        reference: ''
-        cmsPage: ''
-        replace: ''
+        reference: null
+        cmsPage: null
+        replace: null
         viewBag:
             isHidden: '0'
+            cssClass: status
+            isExternal: '0'
+        items:
+            -
+                title: 'Dienste im Weimarnetz'
+                nesting: '0'
+                type: static-page
+                url: ''
+                code: ''
+                reference: status-services
+                cmsPage: ''
+                replace: '0'
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: 'OLSR Verbindungen'
+                nesting: null
+                type: cms-page
+                url: null
+                code: ''
+                reference: services-monitoring/olsr-connections
+                cmsPage: null
+                replace: null
+                viewBag:
+                    isHidden: '0'
+                    cssClass: ''
+                    isExternal: '0'
+            -
+                title: Status
+                nesting: null
+                type: cms-page
+                url: null
+                code: ''
+                reference: services-monitoring/status
+                cmsPage: null
+                replace: null
+                viewBag:
+                    isHidden: '0'
+                    cssClass: no-barba
+                    isExternal: '0'
+    -
+        title: 'Firmware Downloads'
+        nesting: null
+        type: url
+        url: '#'
+        code: ''
+        reference: null
+        cmsPage: null
+        replace: null
+        viewBag:
+            isHidden: '1'
             cssClass: ''
             isExternal: '0'
         items:
@@ -302,84 +351,27 @@ items:
                     cssClass: ''
                     isExternal: '1'
     -
-        title: Termine
-        nesting: ''
-        type: cms-page
-        url: ''
-        code: ''
-        reference: PluginProevents/kalender
-        cmsPage: ''
-        replace: ''
-        viewBag:
-            isHidden: '0'
-            cssClass: 'termine no-barba'
-            isExternal: '0'
-    -
         title: Links
-        nesting: ''
         type: url
         url: '#'
+        code: ''
+        viewBag:
+            isHidden: '1'
+            cssClass: links
+            isExternal: '0'
+    -
+        title: Datenschutz
+        nesting: ''
+        type: url
+        url: /datenschutz
         code: ''
         reference: ''
         cmsPage: ''
         replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: links
+            cssClass: legal
             isExternal: '0'
-        items:
-            -
-                title: 'Unser Wiki'
-                nesting: ''
-                type: url
-                url: 'https://wireless.subsignal.org'
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: freifunk-wiki
-                    isExternal: '1'
-            -
-                title: Facebook
-                nesting: ''
-                type: url
-                url: 'https://www.facebook.com/weimarnetz/'
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: facebook
-                    isExternal: '1'
-            -
-                title: Twitter
-                nesting: ''
-                type: url
-                url: 'https://twitter.com/weimarnetz'
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: telegram
-                    isExternal: '1'
-            -
-                title: Credits
-                nesting: ''
-                type: url
-                url: /credits
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: credits
-                    isExternal: '0'
     -
         title: Impressum
         nesting: ''
@@ -394,15 +386,15 @@ items:
             cssClass: legal
             isExternal: '0'
     -
-        title: Datenschutz
+        title: Credits
         nesting: ''
         type: url
-        url: /datenschutz
+        url: /credits
         code: ''
         reference: ''
         cmsPage: ''
         replace: ''
         viewBag:
             isHidden: '0'
-            cssClass: legal
+            cssClass: credits
             isExternal: '0'

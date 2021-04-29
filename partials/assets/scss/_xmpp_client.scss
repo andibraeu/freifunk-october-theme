@@ -1,0 +1,11 @@
+#conversejs.converse-overlayed {
+    z-index: 990;
+}
+
+#conversejs.converse-chatboxes {
+    bottom: 5em !important;
+    }
+    
+#conversejs + .modal-backdrop, .modal-backdrop + .modal-backdrop {
+	display: none;
+}

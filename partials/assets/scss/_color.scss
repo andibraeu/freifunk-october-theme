@@ -1,0 +1,9 @@
+.gradient-bg {
+    @include vp-linear-gradient(223deg, $yellow, $purple, $yellow, $purple);
+}
+.gradient-text {
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
