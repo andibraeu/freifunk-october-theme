@@ -27,13 +27,19 @@ function get_router_stats() {
     array_walk($valid_sorted_routers, function(&$item, $key, $nowtime) {
         $mtime = new DateTime($item['doc']['mtime']);
         $item['doc']['mtimehours'] = round(($nowtime - $mtime->getTimestamp())/3600);
-        if (array_key_exists('olsr', $item['doc']) && array_key_exists('links', $item['doc']['olsr'])) {
-            array_walk($item['doc']['olsr']['links'], function(&$link, $key) {
+        if (array_key_exists('links', $item['doc']) ) {
+            array_walk($item['doc']['links'], function(&$link, $key) {
+               if (!array_key_exists('linkCost', $link) && array_key_exists('olsr_ipv4', $link) && array_key_exists('linkCost', $link['olsr_ipv4'])) {
+                 $link['linkCost'] = $link['olsr_ipv4']['linkCost'];
+               }
+               if (array_key_exists('linkCost', $link)) {
                 $link['etx'] = round($link['linkCost'] / 1024.0 * 1000.0, 3);
                 if ($link['etx'] > 4000) {
-                    $link['etx'] = 'INFINIT';
+                      $link['etx'] = 'INFINIT';
                 }
-                
+              } else {
+                    $link['etx'] = 'UNKNOWN';
+              }
             });
         }
         if (!array_key_exists('weimarnetz', $item['doc'])) {
@@ -45,6 +51,8 @@ function get_router_stats() {
                 $item['doc']['weimarnetz']['nodenumber'] = $this->get_node_number($item['doc']['olsr']['ipv4Config']['mainIpAddress']);
             } else if (array_key_exists('olsr', $item['doc']) && array_key_exists('ipv4Config', $item['doc']['olsr']) && array_key_exists('mainIp',  $item['doc']['olsr']['ipv4Config'])) {
                 $item['doc']['weimarnetz']['nodenumber'] = $this->get_node_number($item['doc']['olsr']['ipv4Config']['mainIp']);
+            } else if (array_key_exists('olsr', $item['doc']) && array_key_exists('ipv4Config', $item['doc']['olsr']) && array_key_exists('config',  $item['doc']['olsr']['ipv4Config']) && array_key_exists('mainIp', $item['doc']['olsr']['ipv4Config']['config']) ) {
+                $item['doc']['weimarnetz']['nodenumber'] = $this->get_node_number($item['doc']['olsr']['ipv4Config']['config']['mainIp']);
             }
         }
         if (array_key_exists('system', $item['doc']) && array_key_exists('uptime', $item['doc']['system']) && is_array($item['doc']['system']['uptime'])) {
@@ -102,10 +110,10 @@ Router erreichbar: {{ activeRouters }}</p>
         <tr>
             <th data-field="age" data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="Vor so vielen Stunden wurde die Information zuletzt aktualisiert">Alter in h</th>
             <th data-sortable="true" title="Name des Routers">Name</th>
-	        <th data-sortable="true" data-searchable="false" data-sorter="numericOnlyForHtmlLinks" title="Knotennummer des Routers">Knoten</th>
-	        <th data-sortable="true" data-searchable="false" title="Firmwareversion, die aktuell installiert ist">Firmware</th>
-	        <th data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="So lang ist der letzte Neustart her">Uptime in h</th>
-	        <th data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="Anzahl der Nachbarknoten, die dieser Knoten sieht">Nachbarn</th>
+          <th data-sortable="true" data-searchable="false" data-sorter="numericOnlyForHtmlLinks" title="Knotennummer des Routers">Knoten</th>
+          <th data-sortable="true" data-searchable="false" title="Firmwareversion, die aktuell installiert ist">Firmware</th>
+          <th data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="So lang ist der letzte Neustart her">Uptime in h</th>
+          <th data-sortable="true" data-searchable="false" data-sorter="numericOnly" title="Anzahl der Nachbarknoten, die dieser Knoten sieht">Nachbarn</th>
         </tr>
     </thead>
     <tbody>
@@ -116,42 +124,46 @@ Router erreichbar: {{ activeRouters }}</p>
         <td><a href="#" data-toggle="modal" data-target="#info{{ key }}">{{ result.doc.hostname }}</a></td>
         {% if (result.doc.olsr and result.doc.olsr.ipv4Config) %}
             {% if result.doc.olsr.ipv4Config.mainIpAddress %}
-	           <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.mainIpAddress }}">
-	           <a href="http://{{ result.doc.olsr.ipv4Config.mainIpAddress }}/cgi-bin-status.html" target="_blank">
-	          {{ result.doc.weimarnetz.nodenumber }}
-	          </a>
-	        {% elseif result.doc.olsr.ipv4Config.mainIp %}
-	           <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.mainIp }}">
-	           <a href="http://{{ result.doc.olsr.ipv4Config.mainIp }}/cgi-bin-status.html" target="_blank">
-	          {{ result.doc.weimarnetz.nodenumber }}
-	          </a>
+             <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.mainIpAddress }}">
+             <a href="http://{{ result.doc.olsr.ipv4Config.mainIpAddress }}/cgi-bin-status.html" target="_blank">
+            {{ result.doc.weimarnetz.nodenumber }}
+            </a>
+          {% elseif result.doc.olsr.ipv4Config.mainIp %}
+             <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.mainIp }}">
+             <a href="http://{{ result.doc.olsr.ipv4Config.mainIp }}/cgi-bin-status.html" target="_blank">
+            {{ result.doc.weimarnetz.nodenumber }}
+            </a>
+          {% elseif result.doc.olsr.ipv4Config.config.mainIp %}
+             <td data-nodenumber="{{ result.doc.weimarnetz.nodenumber }}" data-mainip="{{ result.doc.olsr.ipv4Config.config.mainIp }}">
+             <a href="http://{{ result.doc.olsr.ipv4Config.config.mainIp }}/cgi-bin-status.html" target="_blank">
+            {{ result.doc.weimarnetz.nodenumber }}
             {% endif %}
-	    {% elseif (result.doc.weimarnetz.nodenumber)  %}
-		    <td>{{ result.doc.weimarnetz.nodenumber }}
-	    {%  else  %}
-	        <td>9999
-	    {% endif %}
-	    </td>
-	    <td>
-			{% if (result.doc.firmware.packageDescription and result.doc.firmware.description) %}	
-				Packages: {{ result.doc.firmware.packageDescription }} <br/>
-				OpenWrt: {{ result.doc.firmware.description }}
-	    {% elseif (result.doc.firmware.description) %}
-		    {{ result.doc.firmware.description }}
-		{% else %}
-			{{ result.doc.firmware.revision }}
-			{% if (result.doc.firmware.fffversion) %}
-			 - {{ result.doc.firmware.fffversion }}
-			{% endif %}
-		{% endif %}
-	    </td>
-	    {% if (result.doc.system and result.doc.system.uptime) %}
-	    	<td data-uptime="{{ result.doc.system.uptime | join }}">{{ result.doc.system.uptime | join }}</td>
-	    {% endif %}
-	    <td>
-	        {{ result.doc.links|length|default('0') }}
-	        
-	    </td>
+      {% elseif (result.doc.weimarnetz.nodenumber)  %}
+        <td>{{ result.doc.weimarnetz.nodenumber }}
+      {%  else  %}
+          <td>9999
+      {% endif %}
+      </td>
+      <td>
+      {% if (result.doc.firmware.packageDescription and result.doc.firmware.description) %} 
+        Packages: {{ result.doc.firmware.packageDescription }} <br/>
+        OpenWrt: {{ result.doc.firmware.description }}
+      {% elseif (result.doc.firmware.description) %}
+        {{ result.doc.firmware.description }}
+    {% else %}
+      {{ result.doc.firmware.revision }}
+      {% if (result.doc.firmware.fffversion) %}
+       - {{ result.doc.firmware.fffversion }}
+      {% endif %}
+    {% endif %}
+      </td>
+      {% if (result.doc.system and result.doc.system.uptime) %}
+        <td data-uptime="{{ result.doc.system.uptime | join }}">{{ result.doc.system.uptime | join }}</td>
+      {% endif %}
+      <td>
+          {{ result.doc.links|length|default('0') }}
+          
+      </td>
     </tr>
 {% endfor %}
 
@@ -169,85 +181,79 @@ Router erreichbar: {{ activeRouters }}</p>
           </div>
           <div class="modal-body">
             <ul class="nav nav-tabs" id="dev{{ key }}">
-	          <li class="nav-item"><a class="nav-link active" href="#general{{ key }}" data-toggle="tab">Allgemein</a></li>
-	          <li class="nav-item"><a class="nav-link" href="#contact{{ key }}" data-toggle="tab">Kontakt</a></li>
-	          <li class="nav-item"><a class="nav-link" href="#network{{ key }}" data-toggle="tab">Netzwerk</a></li>
-	          <li class="nav-item"><a class="nav-link" href="#olsr{{ key }}" data-toggle="tab">OLSR</a></li>
-	          <li class="nav-item"><a class="nav-link" href="#map{{ key }}" data-toggle="tab" data-tab-url="https://map.weimarnetz.de/#detail?node={{ result.id }}">Karte</a></li>
-	        </ul>
-	        <div class="tab-content">
-	            <div class="tab-pane fade show active"  id="general{{ key }}">
-        		    <dl>
-        		      <dt>Gerät</dt>
-        		      <dd>{% if (result.doc.system and result.doc.system.sysinfo) %}{{ result.doc.system.sysinfo[1] }}{% endif %}
-        			</dd>
-        		  <dt>Hardware</dt><dd>{{ result.doc.hardware }}</dd>
-        		  {% if (result.doc.weimarnetz.nexthop ) %}
-        		    <dt>nächster Nachbar</dt><dd>{{ result.doc.weimarnetz.nexthop }}</dd>
-        		  {% endif %}
-        		  {% if (result.doc.weimarnetz.gateway) %}
-        		    <dt>Gateway</dt><dd>{{ result.doc.weimarnetz.gateway }}</dd>
-        		  {% endif %}
-        		  {% if (result.doc.weimarnetz.gatewaycost) %}
-        		    <dt>Gatewaykosten</dt><dd>{{ result.doc.weimarnetz.gatewaycost }}</dd>
-        		  {% endif %}
-        		</dl>
-	           </div>
-	           <div class="tab-pane fade" id="network{{ key }}">
-            		<dl class="slim">
-            		{% for iface in result.doc.interfaces %}
-            		  {% if (iface.ipaddr) %}
-                        <dt>{{  iface.ifname }}</dt><dd>{{ iface.ipaddr }}</dd>
-                        {% if (iface.ssid) %}
-                          <dt>SSID {{  iface.ifname }}</dt><dd>{{ iface.ssid }}</dd>
-                        {% endif %}
-            	      {% endif %}
-            		{% endfor %}
-            		</dl>
-            	      </div>
-            	      <div class="tab-pane fade" id="contact{{ key }}">
-            		<dl>
-            		  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.nickname) %}
-            		    <dt>Ansprechpartner</dt><dd>{{ result.doc.freifunk.contact.nickname }}</dd>
-            		  {% endif %}
-            		  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.mail) %}
-            		    <dt>Email</dt><dd>{{ result.doc.freifunk.contact.mail }}</dd>
-            		  {% endif %}
-            		  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.phone) %}
-            		    <dt>Telefon</dt><dd>{{ result.doc.freifunk.contact.phone }}</dd>
-            		  {% endif %}
-            		  {% if (result.doc.location) %}
-            		    <dt>Standort</dt><dd><a href="https://map.weimarnetz.de/#detail?node={{ result.id }}" target="_blank">{{ result.doc.location }}</a></dd>
-            		  {% endif %}
-            		</dl>
-            	      </div>
-            	      <div class="tab-pane fade" id="olsr{{ key }}">
-            		<dl class="table-display wide">
-            		{% if (result.doc.olsr) %}
-            			{% for olink in result.doc.olsr.links %}
-            			  <dt>{{  olink.destNodeId }}</dt><dd>{{ olink.destAddr }} (ETX {{ olink.etx }})</dd>
-            			{% endfor %}
-            		{% endif %}
-            		</dl>
-            	      </div>
-            	      <div class="tab-pane fade" id="map{{ key }}">
-            		<div><iframe class="map" id="imap{{ key }}"></iframe></div>
-            		<script type="text/javascript">
-                		var link = document.querySelectorAll('a[href="#map{{ key }}"]');
-                		link[0].addEventListener('shown.bs.tab', function () {
-                		  var el = document.getElementById("imap{{ key }}");
-                		  lat = parseFloat("{{ result.doc.latitude }}");
-                		  lon = parseFloat("{{ result.doc.longitude }}");
-                		  lat1 = lat - 0.0001;
-                		  lat2 = lat + 0.0001;
-                		  lon1 = lon - 0.0001;
-                		  lon2 = lon + 0.0001;
-                		  console.log(lon1);
-                		  el.setAttribute('src', 'https://map.weimarnetz.de/mapnohostdetails.html#bbox=' + lat1 + ',' + lon1 + ',' + lat2 + ',' + lon2); 
-                		});
-            		 </script>
-            	      </div>
-	              </div>
+            <li class="nav-item"><a class="nav-link active" href="#general{{ key }}" data-toggle="tab">Allgemein</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact{{ key }}" data-toggle="tab">Kontakt</a></li>
+            <li class="nav-item"><a class="nav-link" href="#network{{ key }}" data-toggle="tab">Netzwerk</a></li>
+            <li class="nav-item"><a class="nav-link" href="#olsr{{ key }}" data-toggle="tab">OLSR</a></li>
+            <li class="nav-item"><a class="nav-link" href="#map{{ key }}" data-toggle="tab" data-tab-url="https://map.weimarnetz.de/#detail?node={{ result.id }}">Karte</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane fade show active"  id="general{{ key }}">
+                <dl>
+                  <dt>Gerät</dt>
+                  <dd>{% if (result.doc.system and result.doc.system.sysinfo) %}{{ result.doc.system.sysinfo[1] }}{% endif %}
+              </dd>
+              <dt>Hardware</dt><dd>{{ result.doc.hardware }}</dd>
+              {% if (result.doc.weimarnetz.nexthop ) %}
+                <dt>nächster Nachbar</dt><dd>{{ result.doc.weimarnetz.nexthop }}</dd>
+              {% endif %}
+              {% if (result.doc.weimarnetz.gateway) %}
+                <dt>Gateway</dt><dd>{{ result.doc.weimarnetz.gateway }}</dd>
+              {% endif %}
+              {% if (result.doc.weimarnetz.gatewaycost) %}
+                <dt>Gatewaykosten</dt><dd>{{ result.doc.weimarnetz.gatewaycost }}</dd>
+              {% endif %}
+            </dl>
+             </div>
+             <div class="tab-pane fade" id="network{{ key }}">
+                <dl class="slim">
+        {% if (result.doc.interfaces) %}
+        {% endif %}
+                </dl>
+                    </div>
+                    <div class="tab-pane fade" id="contact{{ key }}">
+                <dl>
+                  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.nickname) %}
+                    <dt>Ansprechpartner</dt><dd>{{ result.doc.freifunk.contact.nickname }}</dd>
+                  {% endif %}
+                  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.mail) %}
+                    <dt>Email</dt><dd>{{ result.doc.freifunk.contact.mail }}</dd>
+                  {% endif %}
+                  {% if (result.doc.freifunk and result.doc.freifunk.contact and result.doc.freifunk.contact.phone) %}
+                    <dt>Telefon</dt><dd>{{ result.doc.freifunk.contact.phone }}</dd>
+                  {% endif %}
+                  {% if (result.doc.location) %}
+                    <dt>Standort</dt><dd><a href="https://map.weimarnetz.de/#detail?node={{ result.id }}" target="_blank">{{ result.doc.location }}</a></dd>
+                  {% endif %}
+                </dl>
+                    </div>
+                    <div class="tab-pane fade" id="olsr{{ key }}">
+                <dl class="table-display wide">
+                {% if (result.doc.links) %}
+                  {% for olink in result.doc.links %}
+                    <dt>{{  olink.id }}</dt><dd>{{ olink.destAddr4 }} (ETX {{ olink.etx }})</dd>
+                  {% endfor %}
+                {% endif %}
+                </dl>
+                    </div>
+                    <div class="tab-pane fade" id="map{{ key }}">
+                <div><iframe class="map" id="imap{{ key }}"></iframe></div>
+                <script type="text/javascript">
+                    var link = document.querySelectorAll('a[href="#map{{ key }}"]');
+                    link[0].addEventListener('shown.bs.tab', function () {
+                      var el = document.getElementById("imap{{ key }}");
+                      lat = parseFloat("{{ result.doc.latitude }}");
+                      lon = parseFloat("{{ result.doc.longitude }}");
+                      lat1 = lat - 0.0001;
+                      lat2 = lat + 0.0001;
+                      lon1 = lon - 0.0001;
+                      lon2 = lon + 0.0001;
+                      console.log(lon1);
+                      el.setAttribute('src', 'https://map.weimarnetz.de/mapnohostdetails.html#bbox=' + lat1 + ',' + lon1 + ',' + lat2 + ',' + lon2); 
+                    });
+                 </script>
+                    </div>
+                </div>
               </div>
               <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>

@@ -67,9 +67,13 @@ items:
             isExternal: '1'
     -
         title: News
+        nesting: null
         type: url
         url: /
         code: ''
+        reference: null
+        cmsPage: null
+        replace: null
         viewBag:
             isHidden: '0'
             cssClass: ''
@@ -105,8 +109,10 @@ items:
                 title: 'Mailinglisten - Newsportal'
                 nesting: 0
                 type: static-page
+                url: null
                 code: ''
                 reference: mailinglisten
+                cmsPage: null
                 replace: 0
                 viewBag:
                     isHidden: '0'
@@ -210,19 +216,6 @@ items:
                 nesting: ''
                 type: url
                 url: 'https://github.com/weimarnetz/weimarnetz'
-                code: ''
-                reference: ''
-                cmsPage: ''
-                replace: ''
-                viewBag:
-                    isHidden: '0'
-                    cssClass: ''
-                    isExternal: '1'
-            -
-                title: Meshkit
-                nesting: ''
-                type: url
-                url: 'https://github.com/weimarnetz/meshkit'
                 code: ''
                 reference: ''
                 cmsPage: ''
@@ -352,9 +345,13 @@ items:
                     isExternal: '1'
     -
         title: Links
+        nesting: null
         type: url
         url: '#'
         code: ''
+        reference: null
+        cmsPage: null
+        replace: null
         viewBag:
             isHidden: '1'
             cssClass: links
