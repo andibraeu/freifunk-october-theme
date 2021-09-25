@@ -22,7 +22,7 @@ function onRefreshTime() {
 
 function normalize_link_data($neighbors) {
     $links = array();
-    if (array_key_exists('links', $neighbors)) {
+    if ($neighbors != null and array_key_exists('links', $neighbors)) {
         foreach ($neighbors['links'] as $link) {
         	$etx=$link['linkCost'];
         	if ($etx<2){
