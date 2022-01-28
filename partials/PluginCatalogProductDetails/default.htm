@@ -71,8 +71,18 @@ description = "catalog-plugin/product_details"
                 {% endif %}
                 
                 {% if product.specifications is defined and product.specifications|length > 0 and show_specifications_link %}
+                    {% if product.openwrt_toh_name %}
+                        {% set toh_name = product.openwrt_toh_name %}
+                    {% else %}
+                        {% set toh_name = product.slug %}
+                    {% endif %}
+                    {% if product.openwrt_toh_brand %}
+                        {% set toh_brand = product.openwrt_toh_brand %}
+                    {% else %}
+                        {% set toh_brand = product.brand.slug %}
+                    {% endif %}
                     Weitere Informationen
-                    <a href="{{product.specifications | replace({'{{base_specifications_url}}': this.theme.router_base_specifications_url, '{{brand}}': product.brand.slug, '{{name}}': product.slug})}}" target="_blank" class="specifications">
+                    <a href="{{product.specifications | replace({'{{base_specifications_url}}': this.theme.router_base_specifications_url, '{{brand}}': toh_brand, '{{name}}': toh_name})}}" target="_blank" class="specifications">
                         {% partial "jumplink-iconset" name="arrow_back" color="link-color" direction="up" size=16 class="" %}
                     </a>
                 {% endif %}
