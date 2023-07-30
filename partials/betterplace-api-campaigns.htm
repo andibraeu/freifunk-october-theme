@@ -5,7 +5,10 @@ snippetName = "Betterplace Campaigns"
 <?php
 function onStart()
 {
-    $betterplaceProject = file_get_contents('https://api.betterplace.org/de/api_v4/projects/14895.json');
+    $betterplaceProject = @file_get_contents('https://api.betterplace.org/de/api_v4/projects/14895.json');
+    if ($betterplaceProject === false) {
+      return;
+    }
     $bpPrjJson = json_decode($betterplaceProject, true);
     $this['bpPrjJson'] = $bpPrjJson;
     $betterplaceNeeds = file_get_contents('https://api.betterplace.org/de/api_v4/projects/14895/needs.json');
