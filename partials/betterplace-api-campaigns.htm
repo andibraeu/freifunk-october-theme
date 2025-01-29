@@ -31,13 +31,13 @@ function onStart()
 ?>
 ==
 <h2>Laufende Kampagnen</h2>
-{% for need in bpNeeds if need.completed == false %}
+{% for need in bpNeeds | filter(need => need.completed == false) %}
 
 <dl>
 	<dt>{{ need.title }}</dt>
 	<dd>
 	{% set donation_link = '' %}
-	{% for link in need.links if link.rel == 'new_donation' %}
+	{% for link in need.links | filter(link => link.rel == 'new_donation') %}
 	    {% set donation_link = link.href %}
 	{% endfor %}
 

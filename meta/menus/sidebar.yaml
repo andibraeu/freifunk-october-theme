@@ -105,19 +105,6 @@ items:
                     isHidden: '0'
                     cssClass: news
                     isExternal: '0'
-            -
-                title: 'Mailinglisten - Newsportal'
-                nesting: 0
-                type: static-page
-                url: null
-                code: ''
-                reference: mailinglisten
-                cmsPage: null
-                replace: 0
-                viewBag:
-                    isHidden: '0'
-                    cssClass: ''
-                    isExternal: '0'
     -
         title: Mitmachen
         nesting: null
